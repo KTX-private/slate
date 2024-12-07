@@ -3287,40 +3287,21 @@ ticker: 最新成交信息</p>
           //英文
           btnSpotSelect.innerHTML = 'Spot'
           lang_btn.innerHTML = '中文';
-          btn_spot.innerHTML = 'Spot v3';
-          btn_spot_v4.innerHTML = 'Spot v4'
-          btn_contract_coin.innerHTML = 'Contract Coin';
-          btn_contract.innerHTML = 'Contract USDT';
-          btn_contract_v3.innerHTML = 'Contract USDT v3';
-          btn_contract_v4.innerHTML = 'Contract USDT v4';
+
 
           lang_btn.href = url.replace('en/', 'zh/');
-          btn_spot.href = btn_spot.href.replace('zh/', 'en/');
-          btn_spot_v4.href = btn_spot_v4.href.replace('zh/', 'en/')
-          btn_contract_coin.href = btn_contract_coin.href.replace('zh/', 'en/');
-          btn_contract_v3.href = btn_contract_v3.href.replace('zh/', 'en/');
-          btn_contract_v4.href = btn_contract_v4.href.replace('zh/', 'en/');
+
 
           biboxLogo.onclick = function () {
             window.location.href = 'https://www.bibox.tech/en'
           }
         }else{
           //中文
-          btnSpotSelect.innerHTML = '现货'
           lang_btn.innerHTML = 'English';
-          btn_spot.innerHTML = '现货 v3';
-          btn_spot_v4.innerHTML = '现货 v4'
-          btn_contract_coin.innerHTML = '币本位永续合约';
-          btn_contract.innerHTML = 'U本位永续合约';
-          btn_contract_v3.innerHTML = 'U本位永续合约 v3';
-          btn_contract_v4.innerHTML = 'U本位永续合约 v4';
+
 
           lang_btn.href = url.replace('zh/', 'en/');
-          btn_spot.href = btn_spot.href.replace('en/', 'zh/');
-          btn_spot_v4.href = btn_spot_v4.href.replace('en/', 'zh/');
-          btn_contract_coin.href = btn_contract_coin.href.replace('en/', 'zh/');
-          btn_contract_v3.href = btn_contract_v3.href.replace('en/', 'zh/');
-          btn_contract_v4.href = btn_contract_v4.href.replace('en/', 'zh/');
+
           biboxLogo.onclick = function () {
             window.location.href = 'https://www.bibox.tech/zh'
           }
