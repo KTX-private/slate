@@ -1352,10 +1352,10 @@ const secret = "b825a03636ca09c884ca11d71cfc4217a98cb8bf"; // your secret
 
 const param = {
     symbol:'BTC_USDT',
-    side:'sell',
-    type:'limit',
     quantity:'0.0001',
-    price:'50000'
+    price:'90000',
+    type:'limit',
+    market:'spot',
 }
 
 let bodyStr = JSON.stringify(param);
@@ -1400,11 +1400,11 @@ t = time.time()
 def do_request():
 
     param = {
-        'symbol': 'BTC_USDT',
-        'side': 'sell',
-        'type': 'limit',
-        'quantity': '0.0001',
-        'price': '50000'
+      'symbol':'BTC_USDT',
+      'quantity':'0.0001',
+      'price':'90000',
+      'type':'limit',
+      'market':'spot',
     }
     body_str = json.dumps(param)
     sign = hmac.new(SECRET_KEY.encode("utf-8"), body_str.encode("utf-8"), hashlib.sha256).hexdigest()
@@ -1427,47 +1427,54 @@ if __name__ == '__main__':
 
 ```json
 {
-  "i": 4611688217450643477,  // 交易所分配的委托id
-  "I": "",  // 用户指定的委托id
-  "m": "BTC_USDT",  // 交易对代码
-  "T": "limit",  // 委托类型
-  "s": "sell",  // 委托方向
-  "Q": -0.0100,  // 委托量
-  "P": 10043.8500,  // 委托价格
-  "t": "gtc",  // Time In Force
-  "o": false,  // Post Only
-  "S": "filled",  // 委托状态
-  "E": -0.0100,  // 已成交量
-  "e": -100.43850000,  // 已成交价值
-  "C": 1643193746043,  // 创建时间
-  "U": 1643193746464,  // 更新时间
-  "n": 2,  // 成交笔数
-  "F": [{
-    "i": 13,  // 成交id
-    "t": 1643193746464,  // 成交时间
-    "p": 10043.85,  // 成交价格
-    "q": -0.009,  // 成交量
-    "l": "maker",  // Maker / Taker 成交
-    "f": {
-      "a": "USDT",  // 该笔成交用于支付手续费的资产
-      "m": 0.09039465000  // 该笔成交的手续费额
+  "orderId": "4611767382287843330", // 订单id
+  "clientOrderId": "",  // 自定义id
+  "createTime": "1733390630904", // 创建时间
+  "product": "BTC_USDT", // 交易对代码
+  "type": 1,  // 0市价 1限价
+  "side": "buy", // 交易方向
+  "quantity": "0.01", // 委托数量
+  "stf": "disabled",
+  "price": "10300",  // 委托价格
+  "visibleQty": "0.01",
+  "timeInForce": "gtc",
+  "cancelAfter": 0,
+  "postOnly": false,
+  "positionMerge": "none", // 仓位模式 none分仓 long合并多 short合并空
+  "positionId": 0,  // 提交的仓位id
+  "close": false,   // 是否为可平单
+  "leverage": 0,    // 杠杠倍数
+  "action": "unknown", // 仓位行为
+  "status": "filled", // 订单状态
+  "executedQty": "0.01", // 已成交数量
+  "profit": "0",    // 收益
+  "executedCost": "103", // 已成交价值
+  "fillCount": 1, // 成交次数
+  "fills": [  // 成交详情
+    {
+      "tradeId": 1,
+      "time": "1733390650379",
+      "price": "10300",
+      "quantity": "0.01",
+      "profit": "0",
+      "taker": false,
+      "fees": [
+        {
+          "asset": "USDT",
+          "amount": "0.103"
+        }
+      ]
     }
-  }, {
-    "i": 12,
-    "t": 1643193746266,
-    "p": 10043.85,
-    "q": -0.001,
-    "l": "maker",
-    "f": {
-      "a": "USDT",
-      "m": 0.01004385000
+  ],
+  "fees": [  // 手续费
+    {
+      "asset": "USDT",  // 资产代码
+      "amount": "0.103" // 数量
     }
-  }],
-  "f": [{
-    "a": "USDT",  // 用于支付手续费的资产
-    "m": 0.10043850000  // 手续费总额
-  }]
+  ],
+  "updateTime": "1733390650379" // 更新时间
 }
+
 ```
 
 **提交委托**
@@ -1478,16 +1485,21 @@ if __name__ == '__main__':
 * 请求参数
 
 
-| 参数名称        | 参数类型 | 是否必传 | 说明                                                                                                                                                                                     |
-| ----------------- | ---------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| symbol          | string   | 是       | 交易对代码，如 BTC_USDT, ETH_USDT 等                                                                                                                                                     |
-| side            | string   | 是       | 委托方向，有效值 buy, sell，不区分大小写                                                                                                                                                 |
-| type            | string   | 是       | 委托类型，有效值 limit                                                                                                                                                                   |
-| client_order_id | string   | 否       | 委托id，有效值为int64整数的字符串，建议使用提交委托时的Unix时间戳                                                                                                                        |
-| quantity        | decimal  | 否       | 委托量                                                                                                                                                                                   |
-| price           | decimal  | 否       | 委托限价                                                                                                                                                                                 |
+| 参数名称            | 参数类型    | 是否必传 | 说明                                                                                                                    |
+|-----------------|---------|------|-----------------------------------------------------------------------------------------------------------------------|
+| symbol          | string  | 是    | 交易对代码，如 BTC_USDT, ETH_USDT 等                                                                                          |
+| type            | string  | 是    | 委托类型，有效值 limit market                                                                                                 |
+| client_order_id | string  | 否    | 委托id，有效值为int64整数的字符串，建议使用提交委托时的Unix时间戳                                                                                |
+| quantity        | decimal | 是    | 委托量 有正负                                                                                                               |
+| price           | decimal | 否    | 委托限价                                                                                                                  |
+| market          | string  | 是    | 必须 spot 现货，lpc U本位永续                                                                                                  |
+| positionMerge   | string  | 否    | 合约必须 none分仓 long合并多 short合并空                                                                                          |
+| marginMethod    | string  | 否    | 合约必须 isolate 逐仓, cross 全仓                                                                                             |
+| leverage        | int     | 否    | 合约必须 杠杠倍数                                                                                                             
+| close           | bool    | 否    | 合约必须 true 平仓单，false 开仓单                                                                                               |
+| post_only       | bool    | 否    | ...                                                                                                                   |
 | time_in_force   | string   | 否       | 委托时效性<br/>有效值 gtc, ioc<br/>gtc 表示未完全成交的委托将一直有效, 直到用户撤销该委托<br/>ioc 表示撮合将立即撤销在下单时刻不能完全成交的委托,<br/> 任何成交都将被保留<br/>默认值 gtc |
-| post_only       | bool     | 否       | ...                                                                                                                                                                                      |
+| positionId   | string   | 否       | 仓位id                                                                                                                  |
 
 > 委托对象
 > 最多包含该委托的20笔成交
@@ -1506,7 +1518,7 @@ const apikey = "9e03e8fda27b6e4fc6b29bb244747dcf64092996"; // your apikey
 const secret = "b825a03636ca09c884ca11d71cfc4217a98cb8bf"; // your secret
 
 
-const queryStr = 'id=1118621391231';
+const queryStr = 'id=4611772879845982339';
 const sign = CryptoJS.HmacSHA256(queryStr, secret).toString();
 const url = `${endpoints}/v1/order?${queryStr}`;
 
@@ -1515,6 +1527,7 @@ request.get(url,{
             'Content-Type': 'application/json',
             'api-key': apikey,
             'api-sign': sign,
+            'api-expire-time':Date.now()+5000  // optional
         },
     },
 
@@ -1546,6 +1559,7 @@ def do_request():
         'Content-Type': 'application/json',
         'api-key': API_KEY,
         'api-sign': sign,
+        'api-expire-time':str(round(t * 1000 +5000)) # optional
     }
     resp = requests.get(END_POINT + path, query_str, headers=headers)
     print(resp.text)
@@ -1559,46 +1573,52 @@ if __name__ == '__main__':
 
 ```json
 {
-  "i": 4611688217450643477,  // 交易所分配的委托id
-  "I": "",  // 用户指定的委托id
-  "m": "BTC_USDT",  // 交易对代码
-  "T": "limit",  // 委托类型
-  "s": "sell",  // 委托方向
-  "Q": -0.0100,  // 委托量
-  "P": 10043.8500,  // 委托价格
-  "t": "gtc",  // Time In Force
-  "o": false,  // Post Only
-  "S": "filled",  // 委托状态
-  "E": -0.0100,  // 已成交量
-  "e": -100.43850000,  // 已成交价值
-  "C": 1643193746043,  // 创建时间
-  "U": 1643193746464,  // 更新时间
-  "n": 2,  // 成交笔数
-  "F": [{
-    "i": 13,  // 成交id
-    "t": 1643193746464,  // 成交时间
-    "p": 10043.85,  // 成交价格
-    "q": -0.009,  // 成交量
-    "l": "maker",  // Maker / Taker 成交
-    "f": {
-      "a": "USDT",  // 该笔成交用于支付手续费的资产
-      "m": 0.09039465000  // 该笔成交的手续费额
+  "orderId": "4611767382287843330", // 订单id
+  "clientOrderId": "",  // 自定义id
+  "createTime": "1733390630904", // 创建时间
+  "product": "BTC_USDT", // 交易对代码
+  "type": 1,  // 0市价 1限价
+  "side": "buy", // 交易方向
+  "quantity": "0.01", // 委托数量
+  "stf": "disabled",
+  "price": "10300",  // 委托价格
+  "visibleQty": "0.01",
+  "timeInForce": "gtc",
+  "cancelAfter": 0,
+  "postOnly": false,
+  "positionMerge": "none", // 仓位模式 none分仓 long合并多 short合并空
+  "positionId": 0,  // 提交的仓位id
+  "close": false,   // 是否为可平单
+  "leverage": 0,    // 杠杠倍数
+  "action": "unknown", // 仓位行为
+  "status": "filled", // 订单状态
+  "executedQty": "0.01", // 已成交数量
+  "profit": "0",    // 收益
+  "executedCost": "103", // 已成交价值
+  "fillCount": 1, // 成交次数
+  "fills": [  // 成交详情
+    {
+      "tradeId": 1,
+      "time": "1733390650379",
+      "price": "10300",
+      "quantity": "0.01",
+      "profit": "0",
+      "taker": false,
+      "fees": [
+        {
+          "asset": "USDT",
+          "amount": "0.103"
+        }
+      ]
     }
-  }, {
-    "i": 12,
-    "t": 1643193746266,
-    "p": 10043.85,
-    "q": -0.001,
-    "l": "maker",
-    "f": {
-      "a": "USDT",
-      "m": 0.01004385000
+  ],
+  "fees": [  // 手续费
+    {
+      "asset": "USDT",  // 资产代码
+      "amount": "0.103" // 数量
     }
-  }],
-  "f": [{
-    "a": "USDT",  // 用于支付手续费的资产
-    "m": 0.10043850000  // 手续费总额
-  }]
+  ],
+  "updateTime": "1733390650379" // 更新时间
 }
 ```
 
@@ -1627,7 +1647,7 @@ const apikey = "9e03e8fda27b6e4fc6b29bb244747dcf64092996"; // your apikey
 const secret = "b825a03636ca09c884ca11d71cfc4217a98cb8bf"; // your secret
 
 
-const queryStr = 'limit=2&status=settled&symbol=BTC_USDT';
+const queryStr = 'limit=2&status=settled&market=spot&symbol=BTC_USDT';
 const sign = CryptoJS.HmacSHA256(queryStr, secret).toString();
 const url = `${endpoints}/v1/orders?${queryStr}`;
 
@@ -1636,6 +1656,7 @@ request.get(url,{
             'Content-Type': 'application/json',
             'api-key': apikey,
             'api-sign': sign,
+            'api-expire-time':Date.now()+5000  // optional
         },
     },
 
@@ -1660,13 +1681,14 @@ SECRET_KEY = 'b825a03636ca09c884ca11d71cfc4217a98cb8bf'
 
 def do_request():
     path = '/v1/orders'
-    query_str = 'limit=2&status=settled&symbol=BTC_USDT'
+    query_str = 'limit=2&status=settled&market=spot&symbol=BTC_USDT'
     sign = hmac.new(SECRET_KEY.encode("utf-8"), query_str.encode("utf-8"), hashlib.sha256).hexdigest()
 
     headers = {
         'Content-Type': 'application/json',
         'api-key': API_KEY,
         'api-sign': sign,
+        'api-expire-time':str(round(t * 1000 +5000)) # optional
     }
     resp = requests.get(END_POINT + path, query_str, headers=headers)
     print(resp.text)
@@ -1681,47 +1703,53 @@ if __name__ == '__main__':
 ```javascript
 [
   {
-    "i": 4611688217450643477,  // 交易所分配的委托id
-    "I": "",  // 用户指定的委托id
-    "m": "BTC_USDT",  // 交易对代码
-    "T": "limit",  // 委托类型
-    "s": "sell",  // 委托方向
-    "Q": -0.0100,  // 委托量
-    "P": 10043.8500,  // 委托价格
-    "t": "gtc",  // Time In Force
-    "o": false,  // Post Only
-    "S": "filled",  // 委托状态
-    "E": -0.0100,  // 已成交量
-    "e": -100.43850000,  // 已成交价值
-    "C": 1643193746043,  // 创建时间
-    "U": 1643193746464,  // 更新时间
-    "n": 2,  // 成交笔数
-    "F": [{
-      "i": 13,  // 成交id
-      "t": 1643193746464,  // 成交时间
-      "p": 10043.85,  // 成交价格
-      "q": -0.009,  // 成交量
-      "l": "maker",  // Maker / Taker 成交
-      "f": {
-        "a": "USDT",  // 该笔成交用于支付手续费的资产
-        "m": 0.09039465000  // 该笔成交的手续费额
+    "orderId": "4611767382287843330", // 订单id
+    "clientOrderId": "",  // 自定义id
+    "createTime": "1733390630904", // 创建时间
+    "product": "BTC_USDT", // 交易对代码
+    "type": 1,  // 0市价 1限价
+    "side": "buy", // 交易方向
+    "quantity": "0.01", // 委托数量
+    "stf": "disabled",
+    "price": "10300",  // 委托价格
+    "visibleQty": "0.01",
+    "timeInForce": "gtc",
+    "cancelAfter": 0,
+    "postOnly": false,
+    "positionMerge": "none", // 仓位模式 none分仓 long合并多 short合并空
+    "positionId": 0,  // 提交的仓位id
+    "close": false,   // 是否为可平单
+    "leverage": 0,    // 杠杠倍数
+    "action": "unknown", // 仓位行为
+    "status": "filled", // 订单状态
+    "executedQty": "0.01", // 已成交数量
+    "profit": "0",    // 收益
+    "executedCost": "103", // 已成交价值
+    "fillCount": 1, // 成交次数
+    "fills": [  // 成交详情
+      {
+        "tradeId": 1,
+        "time": "1733390650379",
+        "price": "10300",
+        "quantity": "0.01",
+        "profit": "0",
+        "taker": false,
+        "fees": [
+          {
+            "asset": "USDT",
+            "amount": "0.103"
+          }
+        ]
       }
-    }, {
-      "i": 12,
-      "t": 1643193746266,
-      "p": 10043.85,
-      "q": -0.001,
-      "l": "maker",
-      "f": {
-        "a": "USDT",
-        "m": 0.01004385000
+    ],
+    "fees": [  // 手续费
+      {
+        "asset": "USDT",  // 资产代码
+        "amount": "0.103" // 数量
       }
-    }],
-    "f": [{
-      "a": "USDT",  // 用于支付手续费的资产
-      "m": 0.10043850000  // 手续费总额
-    }]
-  }
+    ],
+    "updateTime": "1733390650379" // 更新时间
+  },
   ...
 ]
 ```
@@ -1740,14 +1768,15 @@ if __name__ == '__main__':
 
 
 | 参数名称   | 参数类型 | 是否必传 | 说明                                                                                                                                                                                                                                                                                                             |
-| ------------ | ---------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| status     | string   | 否       | 有效值 unsettled, settled<br/>unsettled 表示获取未结算委托，返回结果按委托创建时间倒序排序<br/>settled 表示获取已结算委托，返回结果按委托结算时间倒序排序<br/>默认值 unsettled                                                                                                                                   |
-| symbol     | string   | 否       | 交易对代码，如 BTC_USDT, ETH_USDT 等<br/>当 status=unsettled 时, 不指定 symbol 将返回全部交易对的未结算委托<br/>当 status=settled 时, 必须给定 symbol 参数 |
-| start_time | long     | 否       | 限定返回委托的最近创建时间                                                                                                                                                                                                                                                                                       |
-| end_time   | long     | 否       | 限定返回委托的最近创建时间                                                                                                                                                                                                                                                                                       |
-| before     | int64    | 否       | 委托更新 id<br/>限定返回委托的最大更新id                                                                                                                                                                                                                                                                         |
-| after      | int64    | 否       | 委托更新 id<br/>限定返回委托的最小更新id                                                                                                                                                                                                                                                                         |
-| limit      | long     | 否       | 指定最多返回多少个委托                                                                                                                                                                                                                                                                                           |
+| ------------ | ---------- |-----| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| status     | string   | 否   | 有效值 unsettled, settled<br/>unsettled 表示获取未结算委托，返回结果按委托创建时间倒序排序<br/>settled 表示获取已结算委托，返回结果按委托结算时间倒序排序<br/>默认值 unsettled                                                                                                                                   |
+| market | string   | 否   | 交易对市场，如 spot, lpc 等，spot为现货,lpc为U本位合约   |
+| symbol     | string   | 否   | 交易对代码，如 BTC_USDT, ETH_USDT 等<br/>当 status=unsettled 时, 不指定 symbol 将返回全部交易对的未结算委托<br/>当 status=settled 时, 必须给定 symbol 参数 |
+| start_time | long     | 否   | 限定返回委托的最近创建时间                                                                                                                                                                                                                                                                                       |
+| end_time   | long     | 否   | 限定返回委托的最近创建时间                                                                                                                                                                                                                                                                                       |
+| before     | int64    | 否   | 委托更新 id<br/>限定返回委托的最大更新id                                                                                                                                                                                                                                                                         |
+| after      | int64    | 否   | 委托更新 id<br/>限定返回委托的最小更新id                                                                                                                                                                                                                                                                         |
+| limit      | long     | 否   | 指定最多返回多少个委托                                                                                                                                                                                                                                                                                           |
 
 * 该接口支持的参数组合和数据源
 
@@ -1784,9 +1813,9 @@ const param = {
 
 let bodyStr = JSON.stringify(param);
 const sign = CryptoJS.HmacSHA256(bodyStr, secret).toString();
-const url = `${endpoints}/v1/order`;
+const url = `${endpoints}/v1/order/delete`;
 
-request.delete({
+request.post({
         url:url,
         body:param,
         json:true,
@@ -1826,14 +1855,14 @@ def do_request():
     }
     body_str = json.dumps(param)
     sign = hmac.new(SECRET_KEY.encode("utf-8"), body_str.encode("utf-8"), hashlib.sha256).hexdigest()
-    path = '/v1/order'
+    path = '/v1/order/delete'
     headers = {
         'Content-Type': 'application/json',
         'api-key': API_KEY,
         'api-sign': sign,
         'api-expire-time':str(round(t * 1000 +5000)) #optional
     }
-    resp = requests.delete(END_POINT + path, json=param, headers=headers)
+    resp = requests.post(END_POINT + path, json=param, headers=headers)
     print(resp.text)
 
 
@@ -1844,48 +1873,7 @@ if __name__ == '__main__':
 > Response
 
 ```json
-{
-  "i": 4611688217450643477,  // 交易所分配的委托id
-  "I": "",  // 用户指定的委托id
-  "m": "BTC_USDT",  // 交易对代码
-  "T": "limit",  // 委托类型
-  "s": "sell",  // 委托方向
-  "Q": -0.0100,  // 委托量
-  "P": 10043.8500,  // 委托价格
-  "t": "gtc",  // Time In Force
-  "o": false,  // Post Only
-  "S": "filled",  // 委托状态
-  "E": -0.0100,  // 已成交量
-  "e": -100.43850000,  // 已成交价值
-  "C": 1643193746043,  // 创建时间
-  "U": 1643193746464,  // 更新时间
-  "n": 2,  // 成交笔数
-  "F": [{
-    "i": 13,  // 成交id
-    "t": 1643193746464,  // 成交时间
-    "p": 10043.85,  // 成交价格
-    "q": -0.009,  // 成交量
-    "l": "maker",  // Maker / Taker 成交
-    "f": {
-      "a": "USDT",  // 该笔成交用于支付手续费的资产
-      "m": 0.09039465000  // 该笔成交的手续费额
-    }
-  }, {
-    "i": 12,
-    "t": 1643193746266,
-    "p": 10043.85,
-    "q": -0.001,
-    "l": "maker",
-    "f": {
-      "a": "USDT",
-      "m": 0.01004385000
-    }
-  }],
-  "f": [{
-    "a": "USDT",  // 用于支付手续费的资产
-    "m": 0.10043850000  // 手续费总额
-  }]
-}
+[n] // 取消数量
 ```
 
 **撤销指定 id 的委托**
@@ -1899,8 +1887,9 @@ if __name__ == '__main__':
 | 参数名称 | 参数类型 | 是否必传 | 说明                                                                                                                                                                                                                                  |
 | ---------- | ---------- | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | id       | string   | 是       | 委托id<br>委托id可以是交易所分配的，<br/>也可以是用户自定义的（在提交委托时使用client_order_id参数）。<br>当使用自定义id时，需要在id前添加 “c:” 前缀。<br/>例如：提交委托时使用了自定义id “123”, 在撤销委托时，需使用 “c:123”。 |
+| market | string   | 是   | 交易对市场，如 spot, lpc 等，spot为现货,lpc为U本位合约   |
 
-> 如果指定id的委托已结算，或者不存在指定id的委托，会收到-3004错误。
+> 如果指定id的委托已结算，或者不存在指定id的委托，会收到-30001错误。
 
 ## Cancel all Orders
 
@@ -1981,7 +1970,7 @@ if __name__ == '__main__':
 > Response
 
 ```json
-[]
+[n] // 取消数量
 ```
 
 **撤销全部委托**
@@ -1992,9 +1981,11 @@ if __name__ == '__main__':
 * 请求参数
 
 
-| 参数名称 | 参数类型 | 是否必传 | 说明                                    |
-| ---------- | ---------- | ---------- | ----------------------------------------- |
-| symbol   | string   | 是       | 交易对代码<br/>如 BTC_USDT, ETH_USDT 等 |
+| 参数名称   | 参数类型 | 是否必传 | 说明                                    |
+|--------| ---------- |-----|---------------------------------------|
+| market | string   | 是   | 交易对市场，如 spot, lpc 等，spot为现货,lpc为U本位合约 |
+| symbol | string   | 是   | 交易对代码<br/>如 BTC_USDT, ETH_USDT 等      |
+| side   | string   | 否   | buy 或者 sell                           |
 
 > 如果请求被正确执行，返回空数组，否则返回错误信息
 
@@ -2011,7 +2002,7 @@ const apikey = "9e03e8fda27b6e4fc6b29bb244747dcf64092996"; // your apikey
 const secret = "b825a03636ca09c884ca11d71cfc4217a98cb8bf"; // your secret
 
 
-const queryStr = 'limit=2&symbol=BTC_USDT';
+const queryStr = 'limit=2&market=spot&symbol=BTC_USDT';
 const sign = CryptoJS.HmacSHA256(queryStr, secret).toString();
 const url = `${endpoints}/v1/fills?${queryStr}`;
 
@@ -2020,6 +2011,8 @@ request.get(url,{
             'Content-Type': 'application/json',
             'api-key': apikey,
             'api-sign': sign,
+            'api-expire-time':Date.now()+5000 // optional
+
         },
     },
 
@@ -2044,7 +2037,7 @@ SECRET_KEY = 'b825a03636ca09c884ca11d71cfc4217a98cb8bf'
 
 def do_request():
     path = '/v1/fills'
-    query_str = 'limit=2&symbol=BTC_USDT'
+    query_str = 'limit=2&market=spot&symbol=BTC_USDT'
     # POST or DELETE replace query_str with body_str
     sign = hmac.new(SECRET_KEY.encode("utf-8"), query_str.encode("utf-8"), hashlib.sha256).hexdigest()
 
@@ -2052,6 +2045,7 @@ def do_request():
         'Content-Type': 'application/json',
         'api-key': API_KEY,
         'api-sign': sign,
+        'api-expire-time':str(round(t * 1000 +5000)) # optional
     }
     resp = requests.get(END_POINT + path, query_str, headers=headers)
     print(resp.text)
@@ -2066,37 +2060,15 @@ if __name__ == '__main__':
 ```json
 [
   {
-    "i": 13,  // 成交id
-    "t": 1643193746464,  // 成交时间
-    "p": 10043.85,  // 成交价格
-    "q": -0.009,  // 成交量
-    "l": "maker",  // Maker / Taker 成交
-    "f": {
-      "a": "USDT",  // 该笔成交用于支付手续费的资产
-      "m": 0.09039465000  // 该笔成交的手续费额
-    }
-  },
-    {
-    "i": 13,  // 成交id
-    "t": 1643193746464,  // 成交时间
-    "p": 10043.85,  // 成交价格
-    "q": -0.009,  // 成交量
-    "l": "maker",  // Maker / Taker 成交
-    "f": {
-      "a": "USDT",  // 该笔成交用于支付手续费的资产
-      "m": 0.09039465000  // 该笔成交的手续费额
-    }
-  },
-    {
-    "i": 13,  // 成交id
-    "t": 1643193746464,  // 成交时间
-    "p": 10043.85,  // 成交价格
-    "q": -0.009,  // 成交量
-    "l": "maker",  // Maker / Taker 成交
-    "f": {
-      "a": "USDT",  // 该笔成交用于支付手续费的资产
-      "m": 0.09039465000  // 该笔成交的手续费额
-    }
+    "product":"BTC_USDT_SWAP", // 交易对代码
+    "fees":[{"amount":"10","asset":"USDT"}],// 手续费
+    "quantity":"0.01", // 成交数量
+    "orderId":"4611772879845982371", // 订单id
+    "price":"1000000", // 成交价格
+    "time":"1733541360859", // 成交时间
+    "taker":true, // 是否为吃单
+    "profit":"-9060", // 收益
+    "tradeId":26 
   },
   ...
 ]
@@ -2150,10 +2122,10 @@ if __name__ == '__main__':
 ```javascript
 const CryptoJS = require("crypto-js");
 const WebSocket = require('ws');
-const madexws = 'wss://user-wss.madex360.com';
+const madexws = 'wss://madex-user.tonetou.com';
 const apikey = "9e2bd17ff73e8531c0f3c26f93e48bfa402a3b13"; // your apikey
 const secret = "ca55beb9e45d4f30b3959b464402319b9e12bac7"; // your secret
-const sign = CryptoJS.HmacSHA256("", secret).toString();
+const sign = CryptoJS.HmacSHA256("/user/verify", secret).toString();
 
 let wsClass = function () {
 };
@@ -2163,14 +2135,17 @@ wsClass.prototype._initWs = async function () {
   let that = this;
   console.log(madexws);
 
-  let ws = new WebSocket(madexws,"",{headers:{
-      'BIBOX-API-KEY': apikey,
-      'BIBOX-API-SIGN': sign,
-    }});
+  let ws = new WebSocket(madexws);
   that.ws = ws;
 
   ws.on('open', function open() {
     console.log(new Date(), 'open')
+    ws.send(JSON.stringify({
+      "method": "LOGIN",
+      "auth": {
+        "api-key": apikey, "api-sign": sign,
+      }
+    }));
     setInterval(function () {
       ws.ping(Date.now())
     },30000)
@@ -2209,10 +2184,12 @@ instance._initWs().catch(err => {
 import websocket
 import hashlib
 import hmac
+import json
 
 ws_url = 'wss://user-wss.madex360.com'
 API_KEY = '9e2bd17ff73e8531c0f3c26f93e48bfa402a3b13'
 SECRET_KEY = 'ca55beb9e45d4f30b3959b464402319b9e12bac7'
+SIGN = hmac.new(SECRET_KEY.encode("utf-8"), "/user/verify".encode('utf-8'), hashlib.sha256).hexdigest()
 
 def on_message(ws, message):
     print(message)
@@ -2227,19 +2204,20 @@ def on_close(ws):
 
 
 def on_open(ws):
+    ws.send(json.dumps({
+        "method": "LOGIN",
+        "auth": {
+            "api-key": API_KEY,
+            "api-sign": SIGN,
+        }
+    }))
     print("### opened ###")
 
 
 def connect():
     # websocket.enableTrace(True)
 
-    sign = hmac.new(SECRET_KEY.encode("utf-8"), "".encode('utf-8'), hashlib.sha256).hexdigest()
-    header = {
-        'BIBOX-API-KEY': API_KEY,
-        'BIBOX-API-SIGN': sign,
-    }
     ws = websocket.WebSocketApp(ws_url,
-                                header=header,
                                 on_message=on_message,
                                 on_error=on_error,
                                 on_close=on_close)
@@ -2281,6 +2259,11 @@ wss://user-wss.madex360.com
   "stream": "order",
   "data": { Order }
 }
+
+{
+  "stream": "order",
+  "data": { Position }
+}
 ```
 
 ## Account
@@ -2291,14 +2274,35 @@ wss://user-wss.madex360.com
 {
   "stream": "account",
   "data": {
-    "s":"USDT",  // 资产代码
-    "a":10000,  // 可用额
-    "h":0  // 冻结额
+      "asset":"USDT", // 资产代码
+      "balance":"100000", // 余额
+      "holds":"20016.9970000" // 冻结
   }
 }
 ```
 
-## Orders
+## Position
+
+**当仓位信息发送变更时，会收到position事件**
+```javascript
+{
+  "stream": "position",
+  "data": {
+      "id":"1125899906842624003", // 仓位id
+      "symbol":"BTC_USDT_SWAP", // 交易对代码
+      "quantity":"0",   // 数量
+      "entryPrice":"0", // 开仓均价
+      "mergeMode":"none", // 仓位模式
+      "marginMethod":"isolate",//仓位模式
+      "leverage":"10.0", // 杠杠
+      "initMargin":"0.1", // 起始保证金率
+      "maintMargin":"0.005",// 维持保证金率
+      "posMargin":"0", // 持仓保证金
+      "orderMargin":"1009.8990000" // 委托保证金
+  }
+}
+```
+## Order
 
 **当委托发生变更时，会收到order事件**
 
@@ -2306,21 +2310,52 @@ wss://user-wss.madex360.com
 {
   "stream": "order",
   "data":{
-    "i": 4611688217450643477,  // 交易所分配的委托id
-    "I": "",  // 用户指定的委托id
-    "m": "BTC_USDT",  // 交易对代码
-    "T": "limit",  // 委托类型
-    "s": "sell",  // 委托方向
-    "Q": -0.0100,  // 委托量
-    "P": 10043.8500,  // 委托价格
-    "t": "gtc",  // Time In Force
-    "o": false,  // Post Only
-    "S": "filled",  // 委托状态
-    "E": -0.0100,  // 已成交量
-    "e": -100.43850000,  // 已成交价值
-    "C": 1643193746043,  // 创建时间
-    "U": 1643193746464,  // 更新时间
-    "n": 2,  // 成交笔数
+    "orderId": "4611767382287843330", // 订单id
+      "clientOrderId": "",  // 自定义id
+      "createTime": "1733390630904", // 创建时间
+      "product": "BTC_USDT", // 交易对代码
+      "type": 1,  // 0市价 1限价
+      "side": "buy", // 交易方向
+      "quantity": "0.01", // 委托数量
+      "stf": "disabled",
+      "price": "10300",  // 委托价格
+      "visibleQty": "0.01",
+      "timeInForce": "gtc",
+      "cancelAfter": 0,
+      "postOnly": false,
+      "positionMerge": "none", // 仓位模式 none分仓 long合并多 short合并空
+      "positionId": 0,  // 提交的仓位id
+      "close": false,   // 是否为可平单
+      "leverage": 0,    // 杠杠倍数
+      "action": "unknown", // 仓位行为
+      "status": "filled", // 订单状态
+      "executedQty": "0.01", // 已成交数量
+      "profit": "0",    // 收益
+      "executedCost": "103", // 已成交价值
+      "fillCount": 1, // 成交次数
+      "fills": [  // 成交详情
+      {
+        "tradeId": 1,
+        "time": "1733390650379",
+        "price": "10300",
+        "quantity": "0.01",
+        "profit": "0",
+        "taker": false,
+        "fees": [
+          {
+            "asset": "USDT",
+            "amount": "0.103"
+          }
+        ]
+      }
+    ],
+      "fees": [  // 手续费
+      {
+        "asset": "USDT",  // 资产代码
+        "amount": "0.103" // 数量
+      }
+    ],
+      "updateTime": "1733390650379" // 更新时间
   }
 }
 ```
