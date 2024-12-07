@@ -65,29 +65,6 @@ under the License.
       <div class="flex_box">
         <%= image_tag "logo.png", class: 'logo', id: "bibox-logo" %>
         <div class="nav_box">
-          <span id="spot_select" class="nav-select">
-            <span id="btn_spot-select">
-              现货
-            </span>
-
-            <span class="nav-select-drop">
-              <a href="/api/spot/v4/zh/" class="nav-select-item" id="btn_spot_v4">现货v4</a>
-              <a href="/api/spot/v3/zh/" class="nav-select-item" id="btn_spot">现货v3</a>
-            </span>
-          </span>
-          <span class="nav-select">
-            <span id="btn_contract-select">
-              U本位永续合约
-            </span>
-
-            <span class="nav-select-drop big">
-              <a href="/api/futures/v4/zh/" class="nav-select-item" id="btn_contract_v4">U本位永续合约 v4</a>
-              <a href="/api/futures/v3/zh/" class="nav-select-item" id="btn_contract_v3">U本位永续合约 v3</a>
-            </span>
-          </span>
-          <span class="nav_cell nav_tab">
-            <a href="/api/futures-coin/v3/zh/" id="btn_contract_coin">币本位永续合约</a>
-          </span>
         </div>
       </div>
       <a href="/api/spot/v3/en/" class="lang" id="lang_box">English</a>
@@ -156,12 +133,6 @@ under the License.
   </body>
       <script>
         const lang_btn = document.getElementById('lang_box');
-        const btn_spot_v4 = document.getElementById('btn_spot_v4');
-        const btn_spot = document.getElementById('btn_spot');
-        const btn_contract = document.getElementById('btn_contract-select');
-        const btn_contract_v3 = document.getElementById('btn_contract_v3')
-        const btn_contract_v4 = document.getElementById('btn_contract_v4')
-        const btn_contract_coin = document.getElementById('btn_contract_coin')
 
         const btnSpotSelect = document.getElementById('btn_spot-select')
         const spot_select = document.getElementById('spot_select')
@@ -174,40 +145,21 @@ under the License.
           //英文
           btnSpotSelect.innerHTML = 'Spot'
           lang_btn.innerHTML = '中文';
-          btn_spot.innerHTML = 'Spot v3';
-          btn_spot_v4.innerHTML = 'Spot v4'
-          btn_contract_coin.innerHTML = 'Contract Coin';
-          btn_contract.innerHTML = 'Contract USDT';
-          btn_contract_v3.innerHTML = 'Contract USDT v3';
-          btn_contract_v4.innerHTML = 'Contract USDT v4';
+
 
           lang_btn.href = url.replace('en/', 'zh/');
-          btn_spot.href = btn_spot.href.replace('zh/', 'en/');
-          btn_spot_v4.href = btn_spot_v4.href.replace('zh/', 'en/')
-          btn_contract_coin.href = btn_contract_coin.href.replace('zh/', 'en/');
-          btn_contract_v3.href = btn_contract_v3.href.replace('zh/', 'en/');
-          btn_contract_v4.href = btn_contract_v4.href.replace('zh/', 'en/');
+
 
           biboxLogo.onclick = function () {
             window.location.href = 'https://www.bibox.tech/en'
           }
         }else{
           //中文
-          btnSpotSelect.innerHTML = '现货'
           lang_btn.innerHTML = 'English';
-          btn_spot.innerHTML = '现货 v3';
-          btn_spot_v4.innerHTML = '现货 v4'
-          btn_contract_coin.innerHTML = '币本位永续合约';
-          btn_contract.innerHTML = 'U本位永续合约';
-          btn_contract_v3.innerHTML = 'U本位永续合约 v3';
-          btn_contract_v4.innerHTML = 'U本位永续合约 v4';
+
 
           lang_btn.href = url.replace('zh/', 'en/');
-          btn_spot.href = btn_spot.href.replace('en/', 'zh/');
-          btn_spot_v4.href = btn_spot_v4.href.replace('en/', 'zh/');
-          btn_contract_coin.href = btn_contract_coin.href.replace('en/', 'zh/');
-          btn_contract_v3.href = btn_contract_v3.href.replace('en/', 'zh/');
-          btn_contract_v4.href = btn_contract_v4.href.replace('en/', 'zh/');
+
           biboxLogo.onclick = function () {
             window.location.href = 'https://www.bibox.tech/zh'
           }
