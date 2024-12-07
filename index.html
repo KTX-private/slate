@@ -438,7 +438,10 @@
                     <a href="#account" class="toc-h2 toc-link" data-title="Account">Account</a>
                   </li>
                   <li>
-                    <a href="#orders" class="toc-h2 toc-link" data-title="Orders">Orders</a>
+                    <a href="#position" class="toc-h2 toc-link" data-title="Position">Position</a>
+                  </li>
+                  <li>
+                    <a href="#order" class="toc-h2 toc-link" data-title="Order">Order</a>
                   </li>
               </ul>
           </li>
@@ -1990,10 +1993,10 @@ ticker: 最新成交信息</p>
 
 <span class="kd">const</span> <span class="nx">param</span> <span class="o">=</span> <span class="p">{</span>
     <span class="na">symbol</span><span class="p">:</span><span class="dl">'</span><span class="s1">BTC_USDT</span><span class="dl">'</span><span class="p">,</span>
-    <span class="na">side</span><span class="p">:</span><span class="dl">'</span><span class="s1">sell</span><span class="dl">'</span><span class="p">,</span>
-    <span class="na">type</span><span class="p">:</span><span class="dl">'</span><span class="s1">limit</span><span class="dl">'</span><span class="p">,</span>
     <span class="na">quantity</span><span class="p">:</span><span class="dl">'</span><span class="s1">0.0001</span><span class="dl">'</span><span class="p">,</span>
-    <span class="na">price</span><span class="p">:</span><span class="dl">'</span><span class="s1">50000</span><span class="dl">'</span>
+    <span class="na">price</span><span class="p">:</span><span class="dl">'</span><span class="s1">90000</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">type</span><span class="p">:</span><span class="dl">'</span><span class="s1">limit</span><span class="dl">'</span><span class="p">,</span>
+    <span class="na">market</span><span class="p">:</span><span class="dl">'</span><span class="s1">spot</span><span class="dl">'</span><span class="p">,</span>
 <span class="p">}</span>
 
 <span class="kd">let</span> <span class="nx">bodyStr</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">param</span><span class="p">);</span>
@@ -2035,11 +2038,11 @@ ticker: 最新成交信息</p>
 <span class="k">def</span> <span class="nf">do_request</span><span class="p">():</span>
 
     <span class="n">param</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s">'symbol'</span><span class="p">:</span> <span class="s">'BTC_USDT'</span><span class="p">,</span>
-        <span class="s">'side'</span><span class="p">:</span> <span class="s">'sell'</span><span class="p">,</span>
-        <span class="s">'type'</span><span class="p">:</span> <span class="s">'limit'</span><span class="p">,</span>
-        <span class="s">'quantity'</span><span class="p">:</span> <span class="s">'0.0001'</span><span class="p">,</span>
-        <span class="s">'price'</span><span class="p">:</span> <span class="s">'50000'</span>
+      <span class="s">'symbol'</span><span class="p">:</span><span class="s">'BTC_USDT'</span><span class="p">,</span>
+      <span class="s">'quantity'</span><span class="p">:</span><span class="s">'0.0001'</span><span class="p">,</span>
+      <span class="s">'price'</span><span class="p">:</span><span class="s">'90000'</span><span class="p">,</span>
+      <span class="s">'type'</span><span class="p">:</span><span class="s">'limit'</span><span class="p">,</span>
+      <span class="s">'market'</span><span class="p">:</span><span class="s">'spot'</span><span class="p">,</span>
     <span class="p">}</span>
     <span class="n">body_str</span> <span class="o">=</span> <span class="n">json</span><span class="p">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">param</span><span class="p">)</span>
     <span class="n">sign</span> <span class="o">=</span> <span class="n">hmac</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="n">SECRET_KEY</span><span class="p">.</span><span class="n">encode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">),</span> <span class="n">body_str</span><span class="p">.</span><span class="n">encode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">),</span> <span class="n">hashlib</span><span class="p">.</span><span class="n">sha256</span><span class="p">).</span><span class="n">hexdigest</span><span class="p">()</span>
@@ -2061,47 +2064,54 @@ ticker: 最新成交信息</p>
 <p>Response</p>
 </blockquote>
 <div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="nl">"i"</span><span class="p">:</span><span class="w"> </span><span class="mi">4611688217450643477</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">交易所分配的委托id</span><span class="w">
-  </span><span class="nl">"I"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">用户指定的委托id</span><span class="w">
-  </span><span class="nl">"m"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BTC_USDT"</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">交易对代码</span><span class="w">
-  </span><span class="nl">"T"</span><span class="p">:</span><span class="w"> </span><span class="s2">"limit"</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">委托类型</span><span class="w">
-  </span><span class="nl">"s"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sell"</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">委托方向</span><span class="w">
-  </span><span class="nl">"Q"</span><span class="p">:</span><span class="w"> </span><span class="mf">-0.0100</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">委托量</span><span class="w">
-  </span><span class="nl">"P"</span><span class="p">:</span><span class="w"> </span><span class="mf">10043.8500</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">委托价格</span><span class="w">
-  </span><span class="nl">"t"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gtc"</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">Time</span><span class="w"> </span><span class="err">In</span><span class="w"> </span><span class="err">Force</span><span class="w">
-  </span><span class="nl">"o"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">Post</span><span class="w"> </span><span class="err">Only</span><span class="w">
-  </span><span class="nl">"S"</span><span class="p">:</span><span class="w"> </span><span class="s2">"filled"</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">委托状态</span><span class="w">
-  </span><span class="nl">"E"</span><span class="p">:</span><span class="w"> </span><span class="mf">-0.0100</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">已成交量</span><span class="w">
-  </span><span class="nl">"e"</span><span class="p">:</span><span class="w"> </span><span class="mf">-100.43850000</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">已成交价值</span><span class="w">
-  </span><span class="nl">"C"</span><span class="p">:</span><span class="w"> </span><span class="mi">1643193746043</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">创建时间</span><span class="w">
-  </span><span class="nl">"U"</span><span class="p">:</span><span class="w"> </span><span class="mi">1643193746464</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">更新时间</span><span class="w">
-  </span><span class="nl">"n"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">成交笔数</span><span class="w">
-  </span><span class="nl">"F"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="w">
-    </span><span class="nl">"i"</span><span class="p">:</span><span class="w"> </span><span class="mi">13</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">成交id</span><span class="w">
-    </span><span class="nl">"t"</span><span class="p">:</span><span class="w"> </span><span class="mi">1643193746464</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">成交时间</span><span class="w">
-    </span><span class="nl">"p"</span><span class="p">:</span><span class="w"> </span><span class="mf">10043.85</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">成交价格</span><span class="w">
-    </span><span class="nl">"q"</span><span class="p">:</span><span class="w"> </span><span class="mf">-0.009</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">成交量</span><span class="w">
-    </span><span class="nl">"l"</span><span class="p">:</span><span class="w"> </span><span class="s2">"maker"</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">Maker</span><span class="w"> </span><span class="err">/</span><span class="w"> </span><span class="err">Taker</span><span class="w"> </span><span class="err">成交</span><span class="w">
-    </span><span class="nl">"f"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-      </span><span class="nl">"a"</span><span class="p">:</span><span class="w"> </span><span class="s2">"USDT"</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">该笔成交用于支付手续费的资产</span><span class="w">
-      </span><span class="nl">"m"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.09039465000</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">该笔成交的手续费额</span><span class="w">
+  </span><span class="nl">"orderId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4611767382287843330"</span><span class="p">,</span><span class="w"> </span><span class="err">//</span><span class="w"> </span><span class="err">订单id</span><span class="w">
+  </span><span class="nl">"clientOrderId"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">自定义id</span><span class="w">
+  </span><span class="nl">"createTime"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1733390630904"</span><span class="p">,</span><span class="w"> </span><span class="err">//</span><span class="w"> </span><span class="err">创建时间</span><span class="w">
+  </span><span class="nl">"product"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BTC_USDT"</span><span class="p">,</span><span class="w"> </span><span class="err">//</span><span class="w"> </span><span class="err">交易对代码</span><span class="w">
+  </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="mi">0</span><span class="err">市价</span><span class="w"> </span><span class="mi">1</span><span class="err">限价</span><span class="w">
+  </span><span class="nl">"side"</span><span class="p">:</span><span class="w"> </span><span class="s2">"buy"</span><span class="p">,</span><span class="w"> </span><span class="err">//</span><span class="w"> </span><span class="err">交易方向</span><span class="w">
+  </span><span class="nl">"quantity"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.01"</span><span class="p">,</span><span class="w"> </span><span class="err">//</span><span class="w"> </span><span class="err">委托数量</span><span class="w">
+  </span><span class="nl">"stf"</span><span class="p">:</span><span class="w"> </span><span class="s2">"disabled"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"price"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10300"</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">委托价格</span><span class="w">
+  </span><span class="nl">"visibleQty"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.01"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"timeInForce"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gtc"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"cancelAfter"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"postOnly"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"positionMerge"</span><span class="p">:</span><span class="w"> </span><span class="s2">"none"</span><span class="p">,</span><span class="w"> </span><span class="err">//</span><span class="w"> </span><span class="err">仓位模式</span><span class="w"> </span><span class="err">none分仓</span><span class="w"> </span><span class="err">long合并多</span><span class="w"> </span><span class="err">short合并空</span><span class="w">
+  </span><span class="nl">"positionId"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">提交的仓位id</span><span class="w">
+  </span><span class="nl">"close"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">   </span><span class="err">//</span><span class="w"> </span><span class="err">是否为可平单</span><span class="w">
+  </span><span class="nl">"leverage"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">    </span><span class="err">//</span><span class="w"> </span><span class="err">杠杠倍数</span><span class="w">
+  </span><span class="nl">"action"</span><span class="p">:</span><span class="w"> </span><span class="s2">"unknown"</span><span class="p">,</span><span class="w"> </span><span class="err">//</span><span class="w"> </span><span class="err">仓位行为</span><span class="w">
+  </span><span class="nl">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"filled"</span><span class="p">,</span><span class="w"> </span><span class="err">//</span><span class="w"> </span><span class="err">订单状态</span><span class="w">
+  </span><span class="nl">"executedQty"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.01"</span><span class="p">,</span><span class="w"> </span><span class="err">//</span><span class="w"> </span><span class="err">已成交数量</span><span class="w">
+  </span><span class="nl">"profit"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span><span class="w">    </span><span class="err">//</span><span class="w"> </span><span class="err">收益</span><span class="w">
+  </span><span class="nl">"executedCost"</span><span class="p">:</span><span class="w"> </span><span class="s2">"103"</span><span class="p">,</span><span class="w"> </span><span class="err">//</span><span class="w"> </span><span class="err">已成交价值</span><span class="w">
+  </span><span class="nl">"fillCount"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="err">//</span><span class="w"> </span><span class="err">成交次数</span><span class="w">
+  </span><span class="nl">"fills"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">成交详情</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"tradeId"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1733390650379"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"price"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10300"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"quantity"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.01"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"profit"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"taker"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"fees"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="nl">"asset"</span><span class="p">:</span><span class="w"> </span><span class="s2">"USDT"</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"amount"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.103"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">]</span><span class="w">
     </span><span class="p">}</span><span class="w">
-  </span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="nl">"i"</span><span class="p">:</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"t"</span><span class="p">:</span><span class="w"> </span><span class="mi">1643193746266</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"p"</span><span class="p">:</span><span class="w"> </span><span class="mf">10043.85</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"q"</span><span class="p">:</span><span class="w"> </span><span class="mf">-0.001</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"l"</span><span class="p">:</span><span class="w"> </span><span class="s2">"maker"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"f"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-      </span><span class="nl">"a"</span><span class="p">:</span><span class="w"> </span><span class="s2">"USDT"</span><span class="p">,</span><span class="w">
-      </span><span class="nl">"m"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.01004385000</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="nl">"fees"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">手续费</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"asset"</span><span class="p">:</span><span class="w"> </span><span class="s2">"USDT"</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">资产代码</span><span class="w">
+      </span><span class="nl">"amount"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.103"</span><span class="w"> </span><span class="err">//</span><span class="w"> </span><span class="err">数量</span><span class="w">
     </span><span class="p">}</span><span class="w">
-  </span><span class="p">}],</span><span class="w">
-  </span><span class="nl">"f"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="w">
-    </span><span class="nl">"a"</span><span class="p">:</span><span class="w"> </span><span class="s2">"USDT"</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">用于支付手续费的资产</span><span class="w">
-    </span><span class="nl">"m"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.10043850000</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">手续费总额</span><span class="w">
-  </span><span class="p">}]</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="nl">"updateTime"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1733390650379"</span><span class="w"> </span><span class="err">//</span><span class="w"> </span><span class="err">更新时间</span><span class="w">
 </span><span class="p">}</span><span class="w">
+
 </span></code></pre></div>
 <p><strong>提交委托</strong></p>
 
@@ -2127,16 +2137,10 @@ ticker: 最新成交信息</p>
 <td>交易对代码，如 BTC_USDT, ETH_USDT 等</td>
 </tr>
 <tr>
-<td>side</td>
-<td>string</td>
-<td>是</td>
-<td>委托方向，有效值 buy, sell，不区分大小写</td>
-</tr>
-<tr>
 <td>type</td>
 <td>string</td>
 <td>是</td>
-<td>委托类型，有效值 limit</td>
+<td>委托类型，有效值 limit market</td>
 </tr>
 <tr>
 <td>client_order_id</td>
@@ -2147,8 +2151,8 @@ ticker: 最新成交信息</p>
 <tr>
 <td>quantity</td>
 <td>decimal</td>
-<td>否</td>
-<td>委托量</td>
+<td>是</td>
+<td>委托量 有正负</td>
 </tr>
 <tr>
 <td>price</td>
@@ -2157,16 +2161,52 @@ ticker: 最新成交信息</p>
 <td>委托限价</td>
 </tr>
 <tr>
-<td>time_in_force</td>
+<td>market</td>
+<td>string</td>
+<td>是</td>
+<td>必须 spot 现货，lpc U本位永续</td>
+</tr>
+<tr>
+<td>positionMerge</td>
 <td>string</td>
 <td>否</td>
-<td>委托时效性<br/>有效值 gtc, ioc<br/>gtc 表示未完全成交的委托将一直有效, 直到用户撤销该委托<br/>ioc 表示撮合将立即撤销在下单时刻不能完全成交的委托,<br/> 任何成交都将被保留<br/>默认值 gtc</td>
+<td>合约必须 none分仓 long合并多 short合并空</td>
+</tr>
+<tr>
+<td>marginMethod</td>
+<td>string</td>
+<td>否</td>
+<td>合约必须 isolate 逐仓, cross 全仓</td>
+</tr>
+<tr>
+<td>leverage</td>
+<td>int</td>
+<td>否</td>
+<td>合约必须 杠杠倍数</td>
+</tr>
+<tr>
+<td>close</td>
+<td>bool</td>
+<td>否</td>
+<td>合约必须 true 平仓单，false 开仓单</td>
 </tr>
 <tr>
 <td>post_only</td>
 <td>bool</td>
 <td>否</td>
 <td>...</td>
+</tr>
+<tr>
+<td>time_in_force</td>
+<td>string</td>
+<td>否</td>
+<td>委托时效性<br/>有效值 gtc, ioc<br/>gtc 表示未完全成交的委托将一直有效, 直到用户撤销该委托<br/>ioc 表示撮合将立即撤销在下单时刻不能完全成交的委托,<br/> 任何成交都将被保留<br/>默认值 gtc</td>
+</tr>
+<tr>
+<td>positionId</td>
+<td>string</td>
+<td>否</td>
+<td>仓位id</td>
 </tr>
 </tbody></table>
 
@@ -2187,7 +2227,7 @@ ticker: 最新成交信息</p>
 <span class="kd">const</span> <span class="nx">secret</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">b825a03636ca09c884ca11d71cfc4217a98cb8bf</span><span class="dl">"</span><span class="p">;</span> <span class="c1">// your secret</span>
 
 
-<span class="kd">const</span> <span class="nx">queryStr</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">id=1118621391231</span><span class="dl">'</span><span class="p">;</span>
+<span class="kd">const</span> <span class="nx">queryStr</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">id=4611772879845982339</span><span class="dl">'</span><span class="p">;</span>
 <span class="kd">const</span> <span class="nx">sign</span> <span class="o">=</span> <span class="nx">CryptoJS</span><span class="p">.</span><span class="nx">HmacSHA256</span><span class="p">(</span><span class="nx">queryStr</span><span class="p">,</span> <span class="nx">secret</span><span class="p">).</span><span class="nx">toString</span><span class="p">();</span>
 <span class="kd">const</span> <span class="nx">url</span> <span class="o">=</span> <span class="s2">`</span><span class="p">${</span><span class="nx">endpoints</span><span class="p">}</span><span class="s2">/v1/order?</span><span class="p">${</span><span class="nx">queryStr</span><span class="p">}</span><span class="s2">`</span><span class="p">;</span>
 
@@ -2196,6 +2236,7 @@ ticker: 最新成交信息</p>
             <span class="dl">'</span><span class="s1">Content-Type</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">application/json</span><span class="dl">'</span><span class="p">,</span>
             <span class="dl">'</span><span class="s1">api-key</span><span class="dl">'</span><span class="p">:</span> <span class="nx">apikey</span><span class="p">,</span>
             <span class="dl">'</span><span class="s1">api-sign</span><span class="dl">'</span><span class="p">:</span> <span class="nx">sign</span><span class="p">,</span>
+            <span class="dl">'</span><span class="s1">api-expire-time</span><span class="dl">'</span><span class="p">:</span><span class="nb">Date</span><span class="p">.</span><span class="nx">now</span><span class="p">()</span><span class="o">+</span><span class="mi">5000</span>  <span class="c1">// optional</span>
         <span class="p">},</span>
     <span class="p">},</span>
 
@@ -2224,7 +2265,8 @@ ticker: 最新成交信息</p>
         <span class="s">'Content-Type'</span><span class="p">:</span> <span class="s">'application/json'</span><span class="p">,</span>
         <span class="s">'api-key'</span><span class="p">:</span> <span class="n">API_KEY</span><span class="p">,</span>
         <span class="s">'api-sign'</span><span class="p">:</span> <span class="n">sign</span><span class="p">,</span>
-    <span class="p">}</span>
+        <span class="s">'api-expire-time'</span><span class="p">:</span><span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">t</span> <span class="o">*</span> <span class="mi">1000</span> <span class="o">+</span><span class="mi">5000</span><span class="p">))</span> <span class="c1"># optional
+</span>    <span class="p">}</span>
     <span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">END_POINT</span> <span class="o">+</span> <span class="n">path</span><span class="p">,</span> <span class="n">query_str</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
     <span class="k">print</span><span class="p">(</span><span class="n">resp</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
 
@@ -2236,46 +2278,52 @@ ticker: 最新成交信息</p>
 <p>Response</p>
 </blockquote>
 <div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="nl">"i"</span><span class="p">:</span><span class="w"> </span><span class="mi">4611688217450643477</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">交易所分配的委托id</span><span class="w">
-  </span><span class="nl">"I"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">用户指定的委托id</span><span class="w">
-  </span><span class="nl">"m"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BTC_USDT"</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">交易对代码</span><span class="w">
-  </span><span class="nl">"T"</span><span class="p">:</span><span class="w"> </span><span class="s2">"limit"</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">委托类型</span><span class="w">
-  </span><span class="nl">"s"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sell"</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">委托方向</span><span class="w">
-  </span><span class="nl">"Q"</span><span class="p">:</span><span class="w"> </span><span class="mf">-0.0100</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">委托量</span><span class="w">
-  </span><span class="nl">"P"</span><span class="p">:</span><span class="w"> </span><span class="mf">10043.8500</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">委托价格</span><span class="w">
-  </span><span class="nl">"t"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gtc"</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">Time</span><span class="w"> </span><span class="err">In</span><span class="w"> </span><span class="err">Force</span><span class="w">
-  </span><span class="nl">"o"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">Post</span><span class="w"> </span><span class="err">Only</span><span class="w">
-  </span><span class="nl">"S"</span><span class="p">:</span><span class="w"> </span><span class="s2">"filled"</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">委托状态</span><span class="w">
-  </span><span class="nl">"E"</span><span class="p">:</span><span class="w"> </span><span class="mf">-0.0100</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">已成交量</span><span class="w">
-  </span><span class="nl">"e"</span><span class="p">:</span><span class="w"> </span><span class="mf">-100.43850000</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">已成交价值</span><span class="w">
-  </span><span class="nl">"C"</span><span class="p">:</span><span class="w"> </span><span class="mi">1643193746043</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">创建时间</span><span class="w">
-  </span><span class="nl">"U"</span><span class="p">:</span><span class="w"> </span><span class="mi">1643193746464</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">更新时间</span><span class="w">
-  </span><span class="nl">"n"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">成交笔数</span><span class="w">
-  </span><span class="nl">"F"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="w">
-    </span><span class="nl">"i"</span><span class="p">:</span><span class="w"> </span><span class="mi">13</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">成交id</span><span class="w">
-    </span><span class="nl">"t"</span><span class="p">:</span><span class="w"> </span><span class="mi">1643193746464</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">成交时间</span><span class="w">
-    </span><span class="nl">"p"</span><span class="p">:</span><span class="w"> </span><span class="mf">10043.85</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">成交价格</span><span class="w">
-    </span><span class="nl">"q"</span><span class="p">:</span><span class="w"> </span><span class="mf">-0.009</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">成交量</span><span class="w">
-    </span><span class="nl">"l"</span><span class="p">:</span><span class="w"> </span><span class="s2">"maker"</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">Maker</span><span class="w"> </span><span class="err">/</span><span class="w"> </span><span class="err">Taker</span><span class="w"> </span><span class="err">成交</span><span class="w">
-    </span><span class="nl">"f"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-      </span><span class="nl">"a"</span><span class="p">:</span><span class="w"> </span><span class="s2">"USDT"</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">该笔成交用于支付手续费的资产</span><span class="w">
-      </span><span class="nl">"m"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.09039465000</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">该笔成交的手续费额</span><span class="w">
+  </span><span class="nl">"orderId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4611767382287843330"</span><span class="p">,</span><span class="w"> </span><span class="err">//</span><span class="w"> </span><span class="err">订单id</span><span class="w">
+  </span><span class="nl">"clientOrderId"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">自定义id</span><span class="w">
+  </span><span class="nl">"createTime"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1733390630904"</span><span class="p">,</span><span class="w"> </span><span class="err">//</span><span class="w"> </span><span class="err">创建时间</span><span class="w">
+  </span><span class="nl">"product"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BTC_USDT"</span><span class="p">,</span><span class="w"> </span><span class="err">//</span><span class="w"> </span><span class="err">交易对代码</span><span class="w">
+  </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="mi">0</span><span class="err">市价</span><span class="w"> </span><span class="mi">1</span><span class="err">限价</span><span class="w">
+  </span><span class="nl">"side"</span><span class="p">:</span><span class="w"> </span><span class="s2">"buy"</span><span class="p">,</span><span class="w"> </span><span class="err">//</span><span class="w"> </span><span class="err">交易方向</span><span class="w">
+  </span><span class="nl">"quantity"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.01"</span><span class="p">,</span><span class="w"> </span><span class="err">//</span><span class="w"> </span><span class="err">委托数量</span><span class="w">
+  </span><span class="nl">"stf"</span><span class="p">:</span><span class="w"> </span><span class="s2">"disabled"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"price"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10300"</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">委托价格</span><span class="w">
+  </span><span class="nl">"visibleQty"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.01"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"timeInForce"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gtc"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"cancelAfter"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"postOnly"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"positionMerge"</span><span class="p">:</span><span class="w"> </span><span class="s2">"none"</span><span class="p">,</span><span class="w"> </span><span class="err">//</span><span class="w"> </span><span class="err">仓位模式</span><span class="w"> </span><span class="err">none分仓</span><span class="w"> </span><span class="err">long合并多</span><span class="w"> </span><span class="err">short合并空</span><span class="w">
+  </span><span class="nl">"positionId"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">提交的仓位id</span><span class="w">
+  </span><span class="nl">"close"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">   </span><span class="err">//</span><span class="w"> </span><span class="err">是否为可平单</span><span class="w">
+  </span><span class="nl">"leverage"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">    </span><span class="err">//</span><span class="w"> </span><span class="err">杠杠倍数</span><span class="w">
+  </span><span class="nl">"action"</span><span class="p">:</span><span class="w"> </span><span class="s2">"unknown"</span><span class="p">,</span><span class="w"> </span><span class="err">//</span><span class="w"> </span><span class="err">仓位行为</span><span class="w">
+  </span><span class="nl">"status"</span><span class="p">:</span><span class="w"> </span><span class="s2">"filled"</span><span class="p">,</span><span class="w"> </span><span class="err">//</span><span class="w"> </span><span class="err">订单状态</span><span class="w">
+  </span><span class="nl">"executedQty"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.01"</span><span class="p">,</span><span class="w"> </span><span class="err">//</span><span class="w"> </span><span class="err">已成交数量</span><span class="w">
+  </span><span class="nl">"profit"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span><span class="w">    </span><span class="err">//</span><span class="w"> </span><span class="err">收益</span><span class="w">
+  </span><span class="nl">"executedCost"</span><span class="p">:</span><span class="w"> </span><span class="s2">"103"</span><span class="p">,</span><span class="w"> </span><span class="err">//</span><span class="w"> </span><span class="err">已成交价值</span><span class="w">
+  </span><span class="nl">"fillCount"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="err">//</span><span class="w"> </span><span class="err">成交次数</span><span class="w">
+  </span><span class="nl">"fills"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">成交详情</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"tradeId"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1733390650379"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"price"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10300"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"quantity"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.01"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"profit"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"taker"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"fees"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="nl">"asset"</span><span class="p">:</span><span class="w"> </span><span class="s2">"USDT"</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"amount"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.103"</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">]</span><span class="w">
     </span><span class="p">}</span><span class="w">
-  </span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="nl">"i"</span><span class="p">:</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"t"</span><span class="p">:</span><span class="w"> </span><span class="mi">1643193746266</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"p"</span><span class="p">:</span><span class="w"> </span><span class="mf">10043.85</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"q"</span><span class="p">:</span><span class="w"> </span><span class="mf">-0.001</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"l"</span><span class="p">:</span><span class="w"> </span><span class="s2">"maker"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"f"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-      </span><span class="nl">"a"</span><span class="p">:</span><span class="w"> </span><span class="s2">"USDT"</span><span class="p">,</span><span class="w">
-      </span><span class="nl">"m"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.01004385000</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="nl">"fees"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">手续费</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"asset"</span><span class="p">:</span><span class="w"> </span><span class="s2">"USDT"</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">资产代码</span><span class="w">
+      </span><span class="nl">"amount"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.103"</span><span class="w"> </span><span class="err">//</span><span class="w"> </span><span class="err">数量</span><span class="w">
     </span><span class="p">}</span><span class="w">
-  </span><span class="p">}],</span><span class="w">
-  </span><span class="nl">"f"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="w">
-    </span><span class="nl">"a"</span><span class="p">:</span><span class="w"> </span><span class="s2">"USDT"</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">用于支付手续费的资产</span><span class="w">
-    </span><span class="nl">"m"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.10043850000</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">手续费总额</span><span class="w">
-  </span><span class="p">}]</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="nl">"updateTime"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1733390650379"</span><span class="w"> </span><span class="err">//</span><span class="w"> </span><span class="err">更新时间</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
 <p><strong>获取指定 id 的委托</strong></p>
@@ -2314,7 +2362,7 @@ ticker: 最新成交信息</p>
 <span class="kd">const</span> <span class="nx">secret</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">b825a03636ca09c884ca11d71cfc4217a98cb8bf</span><span class="dl">"</span><span class="p">;</span> <span class="c1">// your secret</span>
 
 
-<span class="kd">const</span> <span class="nx">queryStr</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">limit=2&amp;status=settled&amp;symbol=BTC_USDT</span><span class="dl">'</span><span class="p">;</span>
+<span class="kd">const</span> <span class="nx">queryStr</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">limit=2&amp;status=settled&amp;market=spot&amp;symbol=BTC_USDT</span><span class="dl">'</span><span class="p">;</span>
 <span class="kd">const</span> <span class="nx">sign</span> <span class="o">=</span> <span class="nx">CryptoJS</span><span class="p">.</span><span class="nx">HmacSHA256</span><span class="p">(</span><span class="nx">queryStr</span><span class="p">,</span> <span class="nx">secret</span><span class="p">).</span><span class="nx">toString</span><span class="p">();</span>
 <span class="kd">const</span> <span class="nx">url</span> <span class="o">=</span> <span class="s2">`</span><span class="p">${</span><span class="nx">endpoints</span><span class="p">}</span><span class="s2">/v1/orders?</span><span class="p">${</span><span class="nx">queryStr</span><span class="p">}</span><span class="s2">`</span><span class="p">;</span>
 
@@ -2323,6 +2371,7 @@ ticker: 最新成交信息</p>
             <span class="dl">'</span><span class="s1">Content-Type</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">application/json</span><span class="dl">'</span><span class="p">,</span>
             <span class="dl">'</span><span class="s1">api-key</span><span class="dl">'</span><span class="p">:</span> <span class="nx">apikey</span><span class="p">,</span>
             <span class="dl">'</span><span class="s1">api-sign</span><span class="dl">'</span><span class="p">:</span> <span class="nx">sign</span><span class="p">,</span>
+            <span class="dl">'</span><span class="s1">api-expire-time</span><span class="dl">'</span><span class="p">:</span><span class="nb">Date</span><span class="p">.</span><span class="nx">now</span><span class="p">()</span><span class="o">+</span><span class="mi">5000</span>  <span class="c1">// optional</span>
         <span class="p">},</span>
     <span class="p">},</span>
 
@@ -2344,14 +2393,15 @@ ticker: 最新成交信息</p>
 
 <span class="k">def</span> <span class="nf">do_request</span><span class="p">():</span>
     <span class="n">path</span> <span class="o">=</span> <span class="s">'/v1/orders'</span>
-    <span class="n">query_str</span> <span class="o">=</span> <span class="s">'limit=2&amp;status=settled&amp;symbol=BTC_USDT'</span>
+    <span class="n">query_str</span> <span class="o">=</span> <span class="s">'limit=2&amp;status=settled&amp;market=spot&amp;symbol=BTC_USDT'</span>
     <span class="n">sign</span> <span class="o">=</span> <span class="n">hmac</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="n">SECRET_KEY</span><span class="p">.</span><span class="n">encode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">),</span> <span class="n">query_str</span><span class="p">.</span><span class="n">encode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">),</span> <span class="n">hashlib</span><span class="p">.</span><span class="n">sha256</span><span class="p">).</span><span class="n">hexdigest</span><span class="p">()</span>
 
     <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s">'Content-Type'</span><span class="p">:</span> <span class="s">'application/json'</span><span class="p">,</span>
         <span class="s">'api-key'</span><span class="p">:</span> <span class="n">API_KEY</span><span class="p">,</span>
         <span class="s">'api-sign'</span><span class="p">:</span> <span class="n">sign</span><span class="p">,</span>
-    <span class="p">}</span>
+        <span class="s">'api-expire-time'</span><span class="p">:</span><span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">t</span> <span class="o">*</span> <span class="mi">1000</span> <span class="o">+</span><span class="mi">5000</span><span class="p">))</span> <span class="c1"># optional
+</span>    <span class="p">}</span>
     <span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">END_POINT</span> <span class="o">+</span> <span class="n">path</span><span class="p">,</span> <span class="n">query_str</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
     <span class="k">print</span><span class="p">(</span><span class="n">resp</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
 
@@ -2364,47 +2414,53 @@ ticker: 最新成交信息</p>
 </blockquote>
 <div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="p">[</span>
   <span class="p">{</span>
-    <span class="dl">"</span><span class="s2">i</span><span class="dl">"</span><span class="p">:</span> <span class="mi">4611688217450643477</span><span class="p">,</span>  <span class="c1">// 交易所分配的委托id</span>
-    <span class="dl">"</span><span class="s2">I</span><span class="dl">"</span><span class="p">:</span> <span class="dl">""</span><span class="p">,</span>  <span class="c1">// 用户指定的委托id</span>
-    <span class="dl">"</span><span class="s2">m</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">BTC_USDT</span><span class="dl">"</span><span class="p">,</span>  <span class="c1">// 交易对代码</span>
-    <span class="dl">"</span><span class="s2">T</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">limit</span><span class="dl">"</span><span class="p">,</span>  <span class="c1">// 委托类型</span>
-    <span class="dl">"</span><span class="s2">s</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">sell</span><span class="dl">"</span><span class="p">,</span>  <span class="c1">// 委托方向</span>
-    <span class="dl">"</span><span class="s2">Q</span><span class="dl">"</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.0100</span><span class="p">,</span>  <span class="c1">// 委托量</span>
-    <span class="dl">"</span><span class="s2">P</span><span class="dl">"</span><span class="p">:</span> <span class="mf">10043.8500</span><span class="p">,</span>  <span class="c1">// 委托价格</span>
-    <span class="dl">"</span><span class="s2">t</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">gtc</span><span class="dl">"</span><span class="p">,</span>  <span class="c1">// Time In Force</span>
-    <span class="dl">"</span><span class="s2">o</span><span class="dl">"</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>  <span class="c1">// Post Only</span>
-    <span class="dl">"</span><span class="s2">S</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">filled</span><span class="dl">"</span><span class="p">,</span>  <span class="c1">// 委托状态</span>
-    <span class="dl">"</span><span class="s2">E</span><span class="dl">"</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.0100</span><span class="p">,</span>  <span class="c1">// 已成交量</span>
-    <span class="dl">"</span><span class="s2">e</span><span class="dl">"</span><span class="p">:</span> <span class="o">-</span><span class="mf">100.43850000</span><span class="p">,</span>  <span class="c1">// 已成交价值</span>
-    <span class="dl">"</span><span class="s2">C</span><span class="dl">"</span><span class="p">:</span> <span class="mi">1643193746043</span><span class="p">,</span>  <span class="c1">// 创建时间</span>
-    <span class="dl">"</span><span class="s2">U</span><span class="dl">"</span><span class="p">:</span> <span class="mi">1643193746464</span><span class="p">,</span>  <span class="c1">// 更新时间</span>
-    <span class="dl">"</span><span class="s2">n</span><span class="dl">"</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>  <span class="c1">// 成交笔数</span>
-    <span class="dl">"</span><span class="s2">F</span><span class="dl">"</span><span class="p">:</span> <span class="p">[{</span>
-      <span class="dl">"</span><span class="s2">i</span><span class="dl">"</span><span class="p">:</span> <span class="mi">13</span><span class="p">,</span>  <span class="c1">// 成交id</span>
-      <span class="dl">"</span><span class="s2">t</span><span class="dl">"</span><span class="p">:</span> <span class="mi">1643193746464</span><span class="p">,</span>  <span class="c1">// 成交时间</span>
-      <span class="dl">"</span><span class="s2">p</span><span class="dl">"</span><span class="p">:</span> <span class="mf">10043.85</span><span class="p">,</span>  <span class="c1">// 成交价格</span>
-      <span class="dl">"</span><span class="s2">q</span><span class="dl">"</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.009</span><span class="p">,</span>  <span class="c1">// 成交量</span>
-      <span class="dl">"</span><span class="s2">l</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">maker</span><span class="dl">"</span><span class="p">,</span>  <span class="c1">// Maker / Taker 成交</span>
-      <span class="dl">"</span><span class="s2">f</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
-        <span class="dl">"</span><span class="s2">a</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">USDT</span><span class="dl">"</span><span class="p">,</span>  <span class="c1">// 该笔成交用于支付手续费的资产</span>
-        <span class="dl">"</span><span class="s2">m</span><span class="dl">"</span><span class="p">:</span> <span class="mf">0.09039465000</span>  <span class="c1">// 该笔成交的手续费额</span>
+    <span class="dl">"</span><span class="s2">orderId</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">4611767382287843330</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// 订单id</span>
+    <span class="dl">"</span><span class="s2">clientOrderId</span><span class="dl">"</span><span class="p">:</span> <span class="dl">""</span><span class="p">,</span>  <span class="c1">// 自定义id</span>
+    <span class="dl">"</span><span class="s2">createTime</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">1733390630904</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// 创建时间</span>
+    <span class="dl">"</span><span class="s2">product</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">BTC_USDT</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// 交易对代码</span>
+    <span class="dl">"</span><span class="s2">type</span><span class="dl">"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>  <span class="c1">// 0市价 1限价</span>
+    <span class="dl">"</span><span class="s2">side</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">buy</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// 交易方向</span>
+    <span class="dl">"</span><span class="s2">quantity</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">0.01</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// 委托数量</span>
+    <span class="dl">"</span><span class="s2">stf</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">disabled</span><span class="dl">"</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">price</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">10300</span><span class="dl">"</span><span class="p">,</span>  <span class="c1">// 委托价格</span>
+    <span class="dl">"</span><span class="s2">visibleQty</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">0.01</span><span class="dl">"</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">timeInForce</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">gtc</span><span class="dl">"</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">cancelAfter</span><span class="dl">"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">postOnly</span><span class="dl">"</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+    <span class="dl">"</span><span class="s2">positionMerge</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">none</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// 仓位模式 none分仓 long合并多 short合并空</span>
+    <span class="dl">"</span><span class="s2">positionId</span><span class="dl">"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>  <span class="c1">// 提交的仓位id</span>
+    <span class="dl">"</span><span class="s2">close</span><span class="dl">"</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>   <span class="c1">// 是否为可平单</span>
+    <span class="dl">"</span><span class="s2">leverage</span><span class="dl">"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>    <span class="c1">// 杠杠倍数</span>
+    <span class="dl">"</span><span class="s2">action</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">unknown</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// 仓位行为</span>
+    <span class="dl">"</span><span class="s2">status</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">filled</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// 订单状态</span>
+    <span class="dl">"</span><span class="s2">executedQty</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">0.01</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// 已成交数量</span>
+    <span class="dl">"</span><span class="s2">profit</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">0</span><span class="dl">"</span><span class="p">,</span>    <span class="c1">// 收益</span>
+    <span class="dl">"</span><span class="s2">executedCost</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">103</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// 已成交价值</span>
+    <span class="dl">"</span><span class="s2">fillCount</span><span class="dl">"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="c1">// 成交次数</span>
+    <span class="dl">"</span><span class="s2">fills</span><span class="dl">"</span><span class="p">:</span> <span class="p">[</span>  <span class="c1">// 成交详情</span>
+      <span class="p">{</span>
+        <span class="dl">"</span><span class="s2">tradeId</span><span class="dl">"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="dl">"</span><span class="s2">time</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">1733390650379</span><span class="dl">"</span><span class="p">,</span>
+        <span class="dl">"</span><span class="s2">price</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">10300</span><span class="dl">"</span><span class="p">,</span>
+        <span class="dl">"</span><span class="s2">quantity</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">0.01</span><span class="dl">"</span><span class="p">,</span>
+        <span class="dl">"</span><span class="s2">profit</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">0</span><span class="dl">"</span><span class="p">,</span>
+        <span class="dl">"</span><span class="s2">taker</span><span class="dl">"</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+        <span class="dl">"</span><span class="s2">fees</span><span class="dl">"</span><span class="p">:</span> <span class="p">[</span>
+          <span class="p">{</span>
+            <span class="dl">"</span><span class="s2">asset</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">USDT</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">amount</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">0.103</span><span class="dl">"</span>
+          <span class="p">}</span>
+        <span class="p">]</span>
       <span class="p">}</span>
-    <span class="p">},</span> <span class="p">{</span>
-      <span class="dl">"</span><span class="s2">i</span><span class="dl">"</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
-      <span class="dl">"</span><span class="s2">t</span><span class="dl">"</span><span class="p">:</span> <span class="mi">1643193746266</span><span class="p">,</span>
-      <span class="dl">"</span><span class="s2">p</span><span class="dl">"</span><span class="p">:</span> <span class="mf">10043.85</span><span class="p">,</span>
-      <span class="dl">"</span><span class="s2">q</span><span class="dl">"</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.001</span><span class="p">,</span>
-      <span class="dl">"</span><span class="s2">l</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">maker</span><span class="dl">"</span><span class="p">,</span>
-      <span class="dl">"</span><span class="s2">f</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
-        <span class="dl">"</span><span class="s2">a</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">USDT</span><span class="dl">"</span><span class="p">,</span>
-        <span class="dl">"</span><span class="s2">m</span><span class="dl">"</span><span class="p">:</span> <span class="mf">0.01004385000</span>
+    <span class="p">],</span>
+    <span class="dl">"</span><span class="s2">fees</span><span class="dl">"</span><span class="p">:</span> <span class="p">[</span>  <span class="c1">// 手续费</span>
+      <span class="p">{</span>
+        <span class="dl">"</span><span class="s2">asset</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">USDT</span><span class="dl">"</span><span class="p">,</span>  <span class="c1">// 资产代码</span>
+        <span class="dl">"</span><span class="s2">amount</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">0.103</span><span class="dl">"</span> <span class="c1">// 数量</span>
       <span class="p">}</span>
-    <span class="p">}],</span>
-    <span class="dl">"</span><span class="s2">f</span><span class="dl">"</span><span class="p">:</span> <span class="p">[{</span>
-      <span class="dl">"</span><span class="s2">a</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">USDT</span><span class="dl">"</span><span class="p">,</span>  <span class="c1">// 用于支付手续费的资产</span>
-      <span class="dl">"</span><span class="s2">m</span><span class="dl">"</span><span class="p">:</span> <span class="mf">0.10043850000</span>  <span class="c1">// 手续费总额</span>
-    <span class="p">}]</span>
-  <span class="p">}</span>
+    <span class="p">],</span>
+    <span class="dl">"</span><span class="s2">updateTime</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">1733390650379</span><span class="dl">"</span> <span class="c1">// 更新时间</span>
+  <span class="p">},</span>
   <span class="p">...</span>
 <span class="p">]</span>
 </code></pre></div>
@@ -2437,6 +2493,12 @@ ticker: 最新成交信息</p>
 <td>string</td>
 <td>否</td>
 <td>有效值 unsettled, settled<br/>unsettled 表示获取未结算委托，返回结果按委托创建时间倒序排序<br/>settled 表示获取已结算委托，返回结果按委托结算时间倒序排序<br/>默认值 unsettled</td>
+</tr>
+<tr>
+<td>market</td>
+<td>string</td>
+<td>否</td>
+<td>交易对市场，如 spot, lpc 等，spot为现货,lpc为U本位合约</td>
 </tr>
 <tr>
 <td>symbol</td>
@@ -2515,9 +2577,9 @@ ticker: 最新成交信息</p>
 
 <span class="kd">let</span> <span class="nx">bodyStr</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">param</span><span class="p">);</span>
 <span class="kd">const</span> <span class="nx">sign</span> <span class="o">=</span> <span class="nx">CryptoJS</span><span class="p">.</span><span class="nx">HmacSHA256</span><span class="p">(</span><span class="nx">bodyStr</span><span class="p">,</span> <span class="nx">secret</span><span class="p">).</span><span class="nx">toString</span><span class="p">();</span>
-<span class="kd">const</span> <span class="nx">url</span> <span class="o">=</span> <span class="s2">`</span><span class="p">${</span><span class="nx">endpoints</span><span class="p">}</span><span class="s2">/v1/order`</span><span class="p">;</span>
+<span class="kd">const</span> <span class="nx">url</span> <span class="o">=</span> <span class="s2">`</span><span class="p">${</span><span class="nx">endpoints</span><span class="p">}</span><span class="s2">/v1/order/delete`</span><span class="p">;</span>
 
-<span class="nx">request</span><span class="p">.</span><span class="k">delete</span><span class="p">({</span>
+<span class="nx">request</span><span class="p">.</span><span class="nx">post</span><span class="p">({</span>
         <span class="na">url</span><span class="p">:</span><span class="nx">url</span><span class="p">,</span>
         <span class="na">body</span><span class="p">:</span><span class="nx">param</span><span class="p">,</span>
         <span class="na">json</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span>
@@ -2554,14 +2616,14 @@ ticker: 最新成交信息</p>
     <span class="p">}</span>
     <span class="n">body_str</span> <span class="o">=</span> <span class="n">json</span><span class="p">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">param</span><span class="p">)</span>
     <span class="n">sign</span> <span class="o">=</span> <span class="n">hmac</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="n">SECRET_KEY</span><span class="p">.</span><span class="n">encode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">),</span> <span class="n">body_str</span><span class="p">.</span><span class="n">encode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">),</span> <span class="n">hashlib</span><span class="p">.</span><span class="n">sha256</span><span class="p">).</span><span class="n">hexdigest</span><span class="p">()</span>
-    <span class="n">path</span> <span class="o">=</span> <span class="s">'/v1/order'</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="s">'/v1/order/delete'</span>
     <span class="n">headers</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s">'Content-Type'</span><span class="p">:</span> <span class="s">'application/json'</span><span class="p">,</span>
         <span class="s">'api-key'</span><span class="p">:</span> <span class="n">API_KEY</span><span class="p">,</span>
         <span class="s">'api-sign'</span><span class="p">:</span> <span class="n">sign</span><span class="p">,</span>
         <span class="s">'api-expire-time'</span><span class="p">:</span><span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">t</span> <span class="o">*</span> <span class="mi">1000</span> <span class="o">+</span><span class="mi">5000</span><span class="p">))</span> <span class="c1">#optional
 </span>    <span class="p">}</span>
-    <span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">delete</span><span class="p">(</span><span class="n">END_POINT</span> <span class="o">+</span> <span class="n">path</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">param</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">post</span><span class="p">(</span><span class="n">END_POINT</span> <span class="o">+</span> <span class="n">path</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">param</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
     <span class="k">print</span><span class="p">(</span><span class="n">resp</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
 
 
@@ -2571,48 +2633,7 @@ ticker: 最新成交信息</p>
 <blockquote>
 <p>Response</p>
 </blockquote>
-<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="nl">"i"</span><span class="p">:</span><span class="w"> </span><span class="mi">4611688217450643477</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">交易所分配的委托id</span><span class="w">
-  </span><span class="nl">"I"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">用户指定的委托id</span><span class="w">
-  </span><span class="nl">"m"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BTC_USDT"</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">交易对代码</span><span class="w">
-  </span><span class="nl">"T"</span><span class="p">:</span><span class="w"> </span><span class="s2">"limit"</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">委托类型</span><span class="w">
-  </span><span class="nl">"s"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sell"</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">委托方向</span><span class="w">
-  </span><span class="nl">"Q"</span><span class="p">:</span><span class="w"> </span><span class="mf">-0.0100</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">委托量</span><span class="w">
-  </span><span class="nl">"P"</span><span class="p">:</span><span class="w"> </span><span class="mf">10043.8500</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">委托价格</span><span class="w">
-  </span><span class="nl">"t"</span><span class="p">:</span><span class="w"> </span><span class="s2">"gtc"</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">Time</span><span class="w"> </span><span class="err">In</span><span class="w"> </span><span class="err">Force</span><span class="w">
-  </span><span class="nl">"o"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">Post</span><span class="w"> </span><span class="err">Only</span><span class="w">
-  </span><span class="nl">"S"</span><span class="p">:</span><span class="w"> </span><span class="s2">"filled"</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">委托状态</span><span class="w">
-  </span><span class="nl">"E"</span><span class="p">:</span><span class="w"> </span><span class="mf">-0.0100</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">已成交量</span><span class="w">
-  </span><span class="nl">"e"</span><span class="p">:</span><span class="w"> </span><span class="mf">-100.43850000</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">已成交价值</span><span class="w">
-  </span><span class="nl">"C"</span><span class="p">:</span><span class="w"> </span><span class="mi">1643193746043</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">创建时间</span><span class="w">
-  </span><span class="nl">"U"</span><span class="p">:</span><span class="w"> </span><span class="mi">1643193746464</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">更新时间</span><span class="w">
-  </span><span class="nl">"n"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">成交笔数</span><span class="w">
-  </span><span class="nl">"F"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="w">
-    </span><span class="nl">"i"</span><span class="p">:</span><span class="w"> </span><span class="mi">13</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">成交id</span><span class="w">
-    </span><span class="nl">"t"</span><span class="p">:</span><span class="w"> </span><span class="mi">1643193746464</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">成交时间</span><span class="w">
-    </span><span class="nl">"p"</span><span class="p">:</span><span class="w"> </span><span class="mf">10043.85</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">成交价格</span><span class="w">
-    </span><span class="nl">"q"</span><span class="p">:</span><span class="w"> </span><span class="mf">-0.009</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">成交量</span><span class="w">
-    </span><span class="nl">"l"</span><span class="p">:</span><span class="w"> </span><span class="s2">"maker"</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">Maker</span><span class="w"> </span><span class="err">/</span><span class="w"> </span><span class="err">Taker</span><span class="w"> </span><span class="err">成交</span><span class="w">
-    </span><span class="nl">"f"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-      </span><span class="nl">"a"</span><span class="p">:</span><span class="w"> </span><span class="s2">"USDT"</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">该笔成交用于支付手续费的资产</span><span class="w">
-      </span><span class="nl">"m"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.09039465000</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">该笔成交的手续费额</span><span class="w">
-    </span><span class="p">}</span><span class="w">
-  </span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="nl">"i"</span><span class="p">:</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"t"</span><span class="p">:</span><span class="w"> </span><span class="mi">1643193746266</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"p"</span><span class="p">:</span><span class="w"> </span><span class="mf">10043.85</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"q"</span><span class="p">:</span><span class="w"> </span><span class="mf">-0.001</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"l"</span><span class="p">:</span><span class="w"> </span><span class="s2">"maker"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"f"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-      </span><span class="nl">"a"</span><span class="p">:</span><span class="w"> </span><span class="s2">"USDT"</span><span class="p">,</span><span class="w">
-      </span><span class="nl">"m"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.01004385000</span><span class="w">
-    </span><span class="p">}</span><span class="w">
-  </span><span class="p">}],</span><span class="w">
-  </span><span class="nl">"f"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="w">
-    </span><span class="nl">"a"</span><span class="p">:</span><span class="w"> </span><span class="s2">"USDT"</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">用于支付手续费的资产</span><span class="w">
-    </span><span class="nl">"m"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.10043850000</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">手续费总额</span><span class="w">
-  </span><span class="p">}]</span><span class="w">
-</span><span class="p">}</span><span class="w">
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">[</span><span class="err">n</span><span class="p">]</span><span class="w"> </span><span class="err">//</span><span class="w"> </span><span class="err">取消数量</span><span class="w">
 </span></code></pre></div>
 <p><strong>撤销指定 id 的委托</strong></p>
 
@@ -2637,10 +2658,16 @@ ticker: 最新成交信息</p>
 <td>是</td>
 <td>委托id<br>委托id可以是交易所分配的，<br/>也可以是用户自定义的（在提交委托时使用client_order_id参数）。<br>当使用自定义id时，需要在id前添加 “c:” 前缀。<br/>例如：提交委托时使用了自定义id “123”, 在撤销委托时，需使用 “c:123”。</td>
 </tr>
+<tr>
+<td>market</td>
+<td>string</td>
+<td>是</td>
+<td>交易对市场，如 spot, lpc 等，spot为现货,lpc为U本位合约</td>
+</tr>
 </tbody></table>
 
 <blockquote>
-<p>如果指定id的委托已结算，或者不存在指定id的委托，会收到-3004错误。</p>
+<p>如果指定id的委托已结算，或者不存在指定id的委托，会收到-30001错误。</p>
 </blockquote>
 <h2 id='cancel-all-orders'>Cancel all Orders</h2>
 <blockquote>
@@ -2716,7 +2743,7 @@ ticker: 最新成交信息</p>
 <blockquote>
 <p>Response</p>
 </blockquote>
-<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">[]</span><span class="w">
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">[</span><span class="err">n</span><span class="p">]</span><span class="w"> </span><span class="err">//</span><span class="w"> </span><span class="err">取消数量</span><span class="w">
 </span></code></pre></div>
 <p><strong>撤销全部委托</strong></p>
 
@@ -2736,10 +2763,22 @@ ticker: 最新成交信息</p>
 </tr>
 </thead><tbody>
 <tr>
+<td>market</td>
+<td>string</td>
+<td>是</td>
+<td>交易对市场，如 spot, lpc 等，spot为现货,lpc为U本位合约</td>
+</tr>
+<tr>
 <td>symbol</td>
 <td>string</td>
 <td>是</td>
 <td>交易对代码<br/>如 BTC_USDT, ETH_USDT 等</td>
+</tr>
+<tr>
+<td>side</td>
+<td>string</td>
+<td>否</td>
+<td>buy 或者 sell</td>
 </tr>
 </tbody></table>
 
@@ -2758,7 +2797,7 @@ ticker: 最新成交信息</p>
 <span class="kd">const</span> <span class="nx">secret</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">b825a03636ca09c884ca11d71cfc4217a98cb8bf</span><span class="dl">"</span><span class="p">;</span> <span class="c1">// your secret</span>
 
 
-<span class="kd">const</span> <span class="nx">queryStr</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">limit=2&amp;symbol=BTC_USDT</span><span class="dl">'</span><span class="p">;</span>
+<span class="kd">const</span> <span class="nx">queryStr</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">limit=2&amp;market=spot&amp;symbol=BTC_USDT</span><span class="dl">'</span><span class="p">;</span>
 <span class="kd">const</span> <span class="nx">sign</span> <span class="o">=</span> <span class="nx">CryptoJS</span><span class="p">.</span><span class="nx">HmacSHA256</span><span class="p">(</span><span class="nx">queryStr</span><span class="p">,</span> <span class="nx">secret</span><span class="p">).</span><span class="nx">toString</span><span class="p">();</span>
 <span class="kd">const</span> <span class="nx">url</span> <span class="o">=</span> <span class="s2">`</span><span class="p">${</span><span class="nx">endpoints</span><span class="p">}</span><span class="s2">/v1/fills?</span><span class="p">${</span><span class="nx">queryStr</span><span class="p">}</span><span class="s2">`</span><span class="p">;</span>
 
@@ -2767,6 +2806,8 @@ ticker: 最新成交信息</p>
             <span class="dl">'</span><span class="s1">Content-Type</span><span class="dl">'</span><span class="p">:</span> <span class="dl">'</span><span class="s1">application/json</span><span class="dl">'</span><span class="p">,</span>
             <span class="dl">'</span><span class="s1">api-key</span><span class="dl">'</span><span class="p">:</span> <span class="nx">apikey</span><span class="p">,</span>
             <span class="dl">'</span><span class="s1">api-sign</span><span class="dl">'</span><span class="p">:</span> <span class="nx">sign</span><span class="p">,</span>
+            <span class="dl">'</span><span class="s1">api-expire-time</span><span class="dl">'</span><span class="p">:</span><span class="nb">Date</span><span class="p">.</span><span class="nx">now</span><span class="p">()</span><span class="o">+</span><span class="mi">5000</span> <span class="c1">// optional</span>
+
         <span class="p">},</span>
     <span class="p">},</span>
 
@@ -2788,7 +2829,7 @@ ticker: 最新成交信息</p>
 
 <span class="k">def</span> <span class="nf">do_request</span><span class="p">():</span>
     <span class="n">path</span> <span class="o">=</span> <span class="s">'/v1/fills'</span>
-    <span class="n">query_str</span> <span class="o">=</span> <span class="s">'limit=2&amp;symbol=BTC_USDT'</span>
+    <span class="n">query_str</span> <span class="o">=</span> <span class="s">'limit=2&amp;market=spot&amp;symbol=BTC_USDT'</span>
     <span class="c1"># POST or DELETE replace query_str with body_str
 </span>    <span class="n">sign</span> <span class="o">=</span> <span class="n">hmac</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="n">SECRET_KEY</span><span class="p">.</span><span class="n">encode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">),</span> <span class="n">query_str</span><span class="p">.</span><span class="n">encode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">),</span> <span class="n">hashlib</span><span class="p">.</span><span class="n">sha256</span><span class="p">).</span><span class="n">hexdigest</span><span class="p">()</span>
 
@@ -2796,7 +2837,8 @@ ticker: 最新成交信息</p>
         <span class="s">'Content-Type'</span><span class="p">:</span> <span class="s">'application/json'</span><span class="p">,</span>
         <span class="s">'api-key'</span><span class="p">:</span> <span class="n">API_KEY</span><span class="p">,</span>
         <span class="s">'api-sign'</span><span class="p">:</span> <span class="n">sign</span><span class="p">,</span>
-    <span class="p">}</span>
+        <span class="s">'api-expire-time'</span><span class="p">:</span><span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">t</span> <span class="o">*</span> <span class="mi">1000</span> <span class="o">+</span><span class="mi">5000</span><span class="p">))</span> <span class="c1"># optional
+</span>    <span class="p">}</span>
     <span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="p">.</span><span class="n">get</span><span class="p">(</span><span class="n">END_POINT</span> <span class="o">+</span> <span class="n">path</span><span class="p">,</span> <span class="n">query_str</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
     <span class="k">print</span><span class="p">(</span><span class="n">resp</span><span class="p">.</span><span class="n">text</span><span class="p">)</span>
 
@@ -2809,37 +2851,15 @@ ticker: 最新成交信息</p>
 </blockquote>
 <div class="highlight"><pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
   </span><span class="p">{</span><span class="w">
-    </span><span class="nl">"i"</span><span class="p">:</span><span class="w"> </span><span class="mi">13</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">成交id</span><span class="w">
-    </span><span class="nl">"t"</span><span class="p">:</span><span class="w"> </span><span class="mi">1643193746464</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">成交时间</span><span class="w">
-    </span><span class="nl">"p"</span><span class="p">:</span><span class="w"> </span><span class="mf">10043.85</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">成交价格</span><span class="w">
-    </span><span class="nl">"q"</span><span class="p">:</span><span class="w"> </span><span class="mf">-0.009</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">成交量</span><span class="w">
-    </span><span class="nl">"l"</span><span class="p">:</span><span class="w"> </span><span class="s2">"maker"</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">Maker</span><span class="w"> </span><span class="err">/</span><span class="w"> </span><span class="err">Taker</span><span class="w"> </span><span class="err">成交</span><span class="w">
-    </span><span class="nl">"f"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-      </span><span class="nl">"a"</span><span class="p">:</span><span class="w"> </span><span class="s2">"USDT"</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">该笔成交用于支付手续费的资产</span><span class="w">
-      </span><span class="nl">"m"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.09039465000</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">该笔成交的手续费额</span><span class="w">
-    </span><span class="p">}</span><span class="w">
-  </span><span class="p">},</span><span class="w">
-    </span><span class="p">{</span><span class="w">
-    </span><span class="nl">"i"</span><span class="p">:</span><span class="w"> </span><span class="mi">13</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">成交id</span><span class="w">
-    </span><span class="nl">"t"</span><span class="p">:</span><span class="w"> </span><span class="mi">1643193746464</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">成交时间</span><span class="w">
-    </span><span class="nl">"p"</span><span class="p">:</span><span class="w"> </span><span class="mf">10043.85</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">成交价格</span><span class="w">
-    </span><span class="nl">"q"</span><span class="p">:</span><span class="w"> </span><span class="mf">-0.009</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">成交量</span><span class="w">
-    </span><span class="nl">"l"</span><span class="p">:</span><span class="w"> </span><span class="s2">"maker"</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">Maker</span><span class="w"> </span><span class="err">/</span><span class="w"> </span><span class="err">Taker</span><span class="w"> </span><span class="err">成交</span><span class="w">
-    </span><span class="nl">"f"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-      </span><span class="nl">"a"</span><span class="p">:</span><span class="w"> </span><span class="s2">"USDT"</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">该笔成交用于支付手续费的资产</span><span class="w">
-      </span><span class="nl">"m"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.09039465000</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">该笔成交的手续费额</span><span class="w">
-    </span><span class="p">}</span><span class="w">
-  </span><span class="p">},</span><span class="w">
-    </span><span class="p">{</span><span class="w">
-    </span><span class="nl">"i"</span><span class="p">:</span><span class="w"> </span><span class="mi">13</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">成交id</span><span class="w">
-    </span><span class="nl">"t"</span><span class="p">:</span><span class="w"> </span><span class="mi">1643193746464</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">成交时间</span><span class="w">
-    </span><span class="nl">"p"</span><span class="p">:</span><span class="w"> </span><span class="mf">10043.85</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">成交价格</span><span class="w">
-    </span><span class="nl">"q"</span><span class="p">:</span><span class="w"> </span><span class="mf">-0.009</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">成交量</span><span class="w">
-    </span><span class="nl">"l"</span><span class="p">:</span><span class="w"> </span><span class="s2">"maker"</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">Maker</span><span class="w"> </span><span class="err">/</span><span class="w"> </span><span class="err">Taker</span><span class="w"> </span><span class="err">成交</span><span class="w">
-    </span><span class="nl">"f"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-      </span><span class="nl">"a"</span><span class="p">:</span><span class="w"> </span><span class="s2">"USDT"</span><span class="p">,</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">该笔成交用于支付手续费的资产</span><span class="w">
-      </span><span class="nl">"m"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.09039465000</span><span class="w">  </span><span class="err">//</span><span class="w"> </span><span class="err">该笔成交的手续费额</span><span class="w">
-    </span><span class="p">}</span><span class="w">
+    </span><span class="nl">"product"</span><span class="p">:</span><span class="s2">"BTC_USDT_SWAP"</span><span class="p">,</span><span class="w"> </span><span class="err">//</span><span class="w"> </span><span class="err">交易对代码</span><span class="w">
+    </span><span class="nl">"fees"</span><span class="p">:[{</span><span class="nl">"amount"</span><span class="p">:</span><span class="s2">"10"</span><span class="p">,</span><span class="nl">"asset"</span><span class="p">:</span><span class="s2">"USDT"</span><span class="p">}],</span><span class="err">//</span><span class="w"> </span><span class="err">手续费</span><span class="w">
+    </span><span class="nl">"quantity"</span><span class="p">:</span><span class="s2">"0.01"</span><span class="p">,</span><span class="w"> </span><span class="err">//</span><span class="w"> </span><span class="err">成交数量</span><span class="w">
+    </span><span class="nl">"orderId"</span><span class="p">:</span><span class="s2">"4611772879845982371"</span><span class="p">,</span><span class="w"> </span><span class="err">//</span><span class="w"> </span><span class="err">订单id</span><span class="w">
+    </span><span class="nl">"price"</span><span class="p">:</span><span class="s2">"1000000"</span><span class="p">,</span><span class="w"> </span><span class="err">//</span><span class="w"> </span><span class="err">成交价格</span><span class="w">
+    </span><span class="nl">"time"</span><span class="p">:</span><span class="s2">"1733541360859"</span><span class="p">,</span><span class="w"> </span><span class="err">//</span><span class="w"> </span><span class="err">成交时间</span><span class="w">
+    </span><span class="nl">"taker"</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="err">//</span><span class="w"> </span><span class="err">是否为吃单</span><span class="w">
+    </span><span class="nl">"profit"</span><span class="p">:</span><span class="s2">"-9060"</span><span class="p">,</span><span class="w"> </span><span class="err">//</span><span class="w"> </span><span class="err">收益</span><span class="w">
+    </span><span class="nl">"tradeId"</span><span class="p">:</span><span class="mi">26</span><span class="w"> 
   </span><span class="p">},</span><span class="w">
   </span><span class="err">...</span><span class="w">
 </span><span class="p">]</span><span class="w">
@@ -2937,10 +2957,10 @@ ticker: 最新成交信息</p>
 </blockquote>
 <div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="kd">const</span> <span class="nx">CryptoJS</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">"</span><span class="s2">crypto-js</span><span class="dl">"</span><span class="p">);</span>
 <span class="kd">const</span> <span class="nx">WebSocket</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="dl">'</span><span class="s1">ws</span><span class="dl">'</span><span class="p">);</span>
-<span class="kd">const</span> <span class="nx">madexws</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">wss://user-wss.madex360.com</span><span class="dl">'</span><span class="p">;</span>
+<span class="kd">const</span> <span class="nx">madexws</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">wss://madex-user.tonetou.com</span><span class="dl">'</span><span class="p">;</span>
 <span class="kd">const</span> <span class="nx">apikey</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">9e2bd17ff73e8531c0f3c26f93e48bfa402a3b13</span><span class="dl">"</span><span class="p">;</span> <span class="c1">// your apikey</span>
 <span class="kd">const</span> <span class="nx">secret</span> <span class="o">=</span> <span class="dl">"</span><span class="s2">ca55beb9e45d4f30b3959b464402319b9e12bac7</span><span class="dl">"</span><span class="p">;</span> <span class="c1">// your secret</span>
-<span class="kd">const</span> <span class="nx">sign</span> <span class="o">=</span> <span class="nx">CryptoJS</span><span class="p">.</span><span class="nx">HmacSHA256</span><span class="p">(</span><span class="dl">""</span><span class="p">,</span> <span class="nx">secret</span><span class="p">).</span><span class="nx">toString</span><span class="p">();</span>
+<span class="kd">const</span> <span class="nx">sign</span> <span class="o">=</span> <span class="nx">CryptoJS</span><span class="p">.</span><span class="nx">HmacSHA256</span><span class="p">(</span><span class="dl">"</span><span class="s2">/user/verify</span><span class="dl">"</span><span class="p">,</span> <span class="nx">secret</span><span class="p">).</span><span class="nx">toString</span><span class="p">();</span>
 
 <span class="kd">let</span> <span class="nx">wsClass</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
 <span class="p">};</span>
@@ -2950,14 +2970,17 @@ ticker: 最新成交信息</p>
   <span class="kd">let</span> <span class="nx">that</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">madexws</span><span class="p">);</span>
 
-  <span class="kd">let</span> <span class="nx">ws</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">WebSocket</span><span class="p">(</span><span class="nx">madexws</span><span class="p">,</span><span class="dl">""</span><span class="p">,{</span><span class="na">headers</span><span class="p">:{</span>
-      <span class="dl">'</span><span class="s1">BIBOX-API-KEY</span><span class="dl">'</span><span class="p">:</span> <span class="nx">apikey</span><span class="p">,</span>
-      <span class="dl">'</span><span class="s1">BIBOX-API-SIGN</span><span class="dl">'</span><span class="p">:</span> <span class="nx">sign</span><span class="p">,</span>
-    <span class="p">}});</span>
+  <span class="kd">let</span> <span class="nx">ws</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">WebSocket</span><span class="p">(</span><span class="nx">madexws</span><span class="p">);</span>
   <span class="nx">that</span><span class="p">.</span><span class="nx">ws</span> <span class="o">=</span> <span class="nx">ws</span><span class="p">;</span>
 
   <span class="nx">ws</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="dl">'</span><span class="s1">open</span><span class="dl">'</span><span class="p">,</span> <span class="kd">function</span> <span class="nx">open</span><span class="p">()</span> <span class="p">{</span>
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">new</span> <span class="nb">Date</span><span class="p">(),</span> <span class="dl">'</span><span class="s1">open</span><span class="dl">'</span><span class="p">)</span>
+    <span class="nx">ws</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">({</span>
+      <span class="dl">"</span><span class="s2">method</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">LOGIN</span><span class="dl">"</span><span class="p">,</span>
+      <span class="dl">"</span><span class="s2">auth</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="dl">"</span><span class="s2">api-key</span><span class="dl">"</span><span class="p">:</span> <span class="nx">apikey</span><span class="p">,</span> <span class="dl">"</span><span class="s2">api-sign</span><span class="dl">"</span><span class="p">:</span> <span class="nx">sign</span><span class="p">,</span>
+      <span class="p">}</span>
+    <span class="p">}));</span>
     <span class="nx">setInterval</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
       <span class="nx">ws</span><span class="p">.</span><span class="nx">ping</span><span class="p">(</span><span class="nb">Date</span><span class="p">.</span><span class="nx">now</span><span class="p">())</span>
     <span class="p">},</span><span class="mi">30000</span><span class="p">)</span>
@@ -2993,10 +3016,12 @@ ticker: 最新成交信息</p>
 </code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">websocket</span>
 <span class="kn">import</span> <span class="nn">hashlib</span>
 <span class="kn">import</span> <span class="nn">hmac</span>
+<span class="kn">import</span> <span class="nn">json</span>
 
 <span class="n">ws_url</span> <span class="o">=</span> <span class="s">'wss://user-wss.madex360.com'</span>
 <span class="n">API_KEY</span> <span class="o">=</span> <span class="s">'9e2bd17ff73e8531c0f3c26f93e48bfa402a3b13'</span>
 <span class="n">SECRET_KEY</span> <span class="o">=</span> <span class="s">'ca55beb9e45d4f30b3959b464402319b9e12bac7'</span>
+<span class="n">SIGN</span> <span class="o">=</span> <span class="n">hmac</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="n">SECRET_KEY</span><span class="p">.</span><span class="n">encode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">),</span> <span class="s">"/user/verify"</span><span class="p">.</span><span class="n">encode</span><span class="p">(</span><span class="s">'utf-8'</span><span class="p">),</span> <span class="n">hashlib</span><span class="p">.</span><span class="n">sha256</span><span class="p">).</span><span class="n">hexdigest</span><span class="p">()</span>
 
 <span class="k">def</span> <span class="nf">on_message</span><span class="p">(</span><span class="n">ws</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
     <span class="k">print</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
@@ -3011,19 +3036,20 @@ ticker: 最新成交信息</p>
 
 
 <span class="k">def</span> <span class="nf">on_open</span><span class="p">(</span><span class="n">ws</span><span class="p">):</span>
+    <span class="n">ws</span><span class="p">.</span><span class="n">send</span><span class="p">(</span><span class="n">json</span><span class="p">.</span><span class="n">dumps</span><span class="p">({</span>
+        <span class="s">"method"</span><span class="p">:</span> <span class="s">"LOGIN"</span><span class="p">,</span>
+        <span class="s">"auth"</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s">"api-key"</span><span class="p">:</span> <span class="n">API_KEY</span><span class="p">,</span>
+            <span class="s">"api-sign"</span><span class="p">:</span> <span class="n">SIGN</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="p">}))</span>
     <span class="k">print</span><span class="p">(</span><span class="s">"### opened ###"</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">connect</span><span class="p">():</span>
     <span class="c1"># websocket.enableTrace(True)
 </span>
-    <span class="n">sign</span> <span class="o">=</span> <span class="n">hmac</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="n">SECRET_KEY</span><span class="p">.</span><span class="n">encode</span><span class="p">(</span><span class="s">"utf-8"</span><span class="p">),</span> <span class="s">""</span><span class="p">.</span><span class="n">encode</span><span class="p">(</span><span class="s">'utf-8'</span><span class="p">),</span> <span class="n">hashlib</span><span class="p">.</span><span class="n">sha256</span><span class="p">).</span><span class="n">hexdigest</span><span class="p">()</span>
-    <span class="n">header</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s">'BIBOX-API-KEY'</span><span class="p">:</span> <span class="n">API_KEY</span><span class="p">,</span>
-        <span class="s">'BIBOX-API-SIGN'</span><span class="p">:</span> <span class="n">sign</span><span class="p">,</span>
-    <span class="p">}</span>
     <span class="n">ws</span> <span class="o">=</span> <span class="n">websocket</span><span class="p">.</span><span class="n">WebSocketApp</span><span class="p">(</span><span class="n">ws_url</span><span class="p">,</span>
-                                <span class="n">header</span><span class="o">=</span><span class="n">header</span><span class="p">,</span>
                                 <span class="n">on_message</span><span class="o">=</span><span class="n">on_message</span><span class="p">,</span>
                                 <span class="n">on_error</span><span class="o">=</span><span class="n">on_error</span><span class="p">,</span>
                                 <span class="n">on_close</span><span class="o">=</span><span class="n">on_close</span><span class="p">)</span>
@@ -3066,36 +3092,92 @@ ticker: 最新成交信息</p>
   <span class="dl">"</span><span class="s2">stream</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">order</span><span class="dl">"</span><span class="p">,</span>
   <span class="dl">"</span><span class="s2">data</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span> <span class="nx">Order</span> <span class="p">}</span>
 <span class="p">}</span>
+
+<span class="p">{</span>
+  <span class="dl">"</span><span class="s2">stream</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">order</span><span class="dl">"</span><span class="p">,</span>
+  <span class="dl">"</span><span class="s2">data</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span> <span class="nx">Position</span> <span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div><h2 id='account'>Account</h2>
 <p><strong>当账户余额发生变更时，会收到account事件</strong></p>
 <div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
   <span class="dl">"</span><span class="s2">stream</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">account</span><span class="dl">"</span><span class="p">,</span>
   <span class="dl">"</span><span class="s2">data</span><span class="dl">"</span><span class="p">:</span> <span class="p">{</span>
-    <span class="dl">"</span><span class="s2">s</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">USDT</span><span class="dl">"</span><span class="p">,</span>  <span class="c1">// 资产代码</span>
-    <span class="dl">"</span><span class="s2">a</span><span class="dl">"</span><span class="p">:</span><span class="mi">10000</span><span class="p">,</span>  <span class="c1">// 可用额</span>
-    <span class="dl">"</span><span class="s2">h</span><span class="dl">"</span><span class="p">:</span><span class="mi">0</span>  <span class="c1">// 冻结额</span>
+      <span class="dl">"</span><span class="s2">asset</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">USDT</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// 资产代码</span>
+      <span class="dl">"</span><span class="s2">balance</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">100000</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// 余额</span>
+      <span class="dl">"</span><span class="s2">holds</span><span class="dl">"</span><span class="p">:</span><span class="dl">"</span><span class="s2">20016.9970000</span><span class="dl">"</span> <span class="c1">// 冻结</span>
   <span class="p">}</span>
 <span class="p">}</span>
-</code></pre></div><h2 id='orders'>Orders</h2>
+</code></pre></div><h2 id='position'>Position</h2>
+<p><strong>当仓位信息发送变更时，会收到position事件</strong>
+<code>javascript
+{
+  &quot;stream&quot;: &quot;position&quot;,
+  &quot;data&quot;: {
+      &quot;id&quot;:&quot;1125899906842624003&quot;, // 仓位id
+      &quot;symbol&quot;:&quot;BTC_USDT_SWAP&quot;, // 交易对代码
+      &quot;quantity&quot;:&quot;0&quot;,   // 数量
+      &quot;entryPrice&quot;:&quot;0&quot;, // 开仓均价
+      &quot;mergeMode&quot;:&quot;none&quot;, // 仓位模式
+      &quot;marginMethod&quot;:&quot;isolate&quot;,//仓位模式
+      &quot;leverage&quot;:&quot;10.0&quot;, // 杠杠
+      &quot;initMargin&quot;:&quot;0.1&quot;, // 起始保证金率
+      &quot;maintMargin&quot;:&quot;0.005&quot;,// 维持保证金率
+      &quot;posMargin&quot;:&quot;0&quot;, // 持仓保证金
+      &quot;orderMargin&quot;:&quot;1009.8990000&quot; // 委托保证金
+  }
+}
+</code></p>
+<h2 id='order'>Order</h2>
 <p><strong>当委托发生变更时，会收到order事件</strong></p>
 <div class="highlight"><pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
   <span class="dl">"</span><span class="s2">stream</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">order</span><span class="dl">"</span><span class="p">,</span>
   <span class="dl">"</span><span class="s2">data</span><span class="dl">"</span><span class="p">:{</span>
-    <span class="dl">"</span><span class="s2">i</span><span class="dl">"</span><span class="p">:</span> <span class="mi">4611688217450643477</span><span class="p">,</span>  <span class="c1">// 交易所分配的委托id</span>
-    <span class="dl">"</span><span class="s2">I</span><span class="dl">"</span><span class="p">:</span> <span class="dl">""</span><span class="p">,</span>  <span class="c1">// 用户指定的委托id</span>
-    <span class="dl">"</span><span class="s2">m</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">BTC_USDT</span><span class="dl">"</span><span class="p">,</span>  <span class="c1">// 交易对代码</span>
-    <span class="dl">"</span><span class="s2">T</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">limit</span><span class="dl">"</span><span class="p">,</span>  <span class="c1">// 委托类型</span>
-    <span class="dl">"</span><span class="s2">s</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">sell</span><span class="dl">"</span><span class="p">,</span>  <span class="c1">// 委托方向</span>
-    <span class="dl">"</span><span class="s2">Q</span><span class="dl">"</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.0100</span><span class="p">,</span>  <span class="c1">// 委托量</span>
-    <span class="dl">"</span><span class="s2">P</span><span class="dl">"</span><span class="p">:</span> <span class="mf">10043.8500</span><span class="p">,</span>  <span class="c1">// 委托价格</span>
-    <span class="dl">"</span><span class="s2">t</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">gtc</span><span class="dl">"</span><span class="p">,</span>  <span class="c1">// Time In Force</span>
-    <span class="dl">"</span><span class="s2">o</span><span class="dl">"</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>  <span class="c1">// Post Only</span>
-    <span class="dl">"</span><span class="s2">S</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">filled</span><span class="dl">"</span><span class="p">,</span>  <span class="c1">// 委托状态</span>
-    <span class="dl">"</span><span class="s2">E</span><span class="dl">"</span><span class="p">:</span> <span class="o">-</span><span class="mf">0.0100</span><span class="p">,</span>  <span class="c1">// 已成交量</span>
-    <span class="dl">"</span><span class="s2">e</span><span class="dl">"</span><span class="p">:</span> <span class="o">-</span><span class="mf">100.43850000</span><span class="p">,</span>  <span class="c1">// 已成交价值</span>
-    <span class="dl">"</span><span class="s2">C</span><span class="dl">"</span><span class="p">:</span> <span class="mi">1643193746043</span><span class="p">,</span>  <span class="c1">// 创建时间</span>
-    <span class="dl">"</span><span class="s2">U</span><span class="dl">"</span><span class="p">:</span> <span class="mi">1643193746464</span><span class="p">,</span>  <span class="c1">// 更新时间</span>
-    <span class="dl">"</span><span class="s2">n</span><span class="dl">"</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>  <span class="c1">// 成交笔数</span>
+    <span class="dl">"</span><span class="s2">orderId</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">4611767382287843330</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// 订单id</span>
+      <span class="dl">"</span><span class="s2">clientOrderId</span><span class="dl">"</span><span class="p">:</span> <span class="dl">""</span><span class="p">,</span>  <span class="c1">// 自定义id</span>
+      <span class="dl">"</span><span class="s2">createTime</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">1733390630904</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// 创建时间</span>
+      <span class="dl">"</span><span class="s2">product</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">BTC_USDT</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// 交易对代码</span>
+      <span class="dl">"</span><span class="s2">type</span><span class="dl">"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>  <span class="c1">// 0市价 1限价</span>
+      <span class="dl">"</span><span class="s2">side</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">buy</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// 交易方向</span>
+      <span class="dl">"</span><span class="s2">quantity</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">0.01</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// 委托数量</span>
+      <span class="dl">"</span><span class="s2">stf</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">disabled</span><span class="dl">"</span><span class="p">,</span>
+      <span class="dl">"</span><span class="s2">price</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">10300</span><span class="dl">"</span><span class="p">,</span>  <span class="c1">// 委托价格</span>
+      <span class="dl">"</span><span class="s2">visibleQty</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">0.01</span><span class="dl">"</span><span class="p">,</span>
+      <span class="dl">"</span><span class="s2">timeInForce</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">gtc</span><span class="dl">"</span><span class="p">,</span>
+      <span class="dl">"</span><span class="s2">cancelAfter</span><span class="dl">"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+      <span class="dl">"</span><span class="s2">postOnly</span><span class="dl">"</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+      <span class="dl">"</span><span class="s2">positionMerge</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">none</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// 仓位模式 none分仓 long合并多 short合并空</span>
+      <span class="dl">"</span><span class="s2">positionId</span><span class="dl">"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>  <span class="c1">// 提交的仓位id</span>
+      <span class="dl">"</span><span class="s2">close</span><span class="dl">"</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>   <span class="c1">// 是否为可平单</span>
+      <span class="dl">"</span><span class="s2">leverage</span><span class="dl">"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>    <span class="c1">// 杠杠倍数</span>
+      <span class="dl">"</span><span class="s2">action</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">unknown</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// 仓位行为</span>
+      <span class="dl">"</span><span class="s2">status</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">filled</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// 订单状态</span>
+      <span class="dl">"</span><span class="s2">executedQty</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">0.01</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// 已成交数量</span>
+      <span class="dl">"</span><span class="s2">profit</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">0</span><span class="dl">"</span><span class="p">,</span>    <span class="c1">// 收益</span>
+      <span class="dl">"</span><span class="s2">executedCost</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">103</span><span class="dl">"</span><span class="p">,</span> <span class="c1">// 已成交价值</span>
+      <span class="dl">"</span><span class="s2">fillCount</span><span class="dl">"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="c1">// 成交次数</span>
+      <span class="dl">"</span><span class="s2">fills</span><span class="dl">"</span><span class="p">:</span> <span class="p">[</span>  <span class="c1">// 成交详情</span>
+      <span class="p">{</span>
+        <span class="dl">"</span><span class="s2">tradeId</span><span class="dl">"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="dl">"</span><span class="s2">time</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">1733390650379</span><span class="dl">"</span><span class="p">,</span>
+        <span class="dl">"</span><span class="s2">price</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">10300</span><span class="dl">"</span><span class="p">,</span>
+        <span class="dl">"</span><span class="s2">quantity</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">0.01</span><span class="dl">"</span><span class="p">,</span>
+        <span class="dl">"</span><span class="s2">profit</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">0</span><span class="dl">"</span><span class="p">,</span>
+        <span class="dl">"</span><span class="s2">taker</span><span class="dl">"</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+        <span class="dl">"</span><span class="s2">fees</span><span class="dl">"</span><span class="p">:</span> <span class="p">[</span>
+          <span class="p">{</span>
+            <span class="dl">"</span><span class="s2">asset</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">USDT</span><span class="dl">"</span><span class="p">,</span>
+            <span class="dl">"</span><span class="s2">amount</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">0.103</span><span class="dl">"</span>
+          <span class="p">}</span>
+        <span class="p">]</span>
+      <span class="p">}</span>
+    <span class="p">],</span>
+      <span class="dl">"</span><span class="s2">fees</span><span class="dl">"</span><span class="p">:</span> <span class="p">[</span>  <span class="c1">// 手续费</span>
+      <span class="p">{</span>
+        <span class="dl">"</span><span class="s2">asset</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">USDT</span><span class="dl">"</span><span class="p">,</span>  <span class="c1">// 资产代码</span>
+        <span class="dl">"</span><span class="s2">amount</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">0.103</span><span class="dl">"</span> <span class="c1">// 数量</span>
+      <span class="p">}</span>
+    <span class="p">],</span>
+      <span class="dl">"</span><span class="s2">updateTime</span><span class="dl">"</span><span class="p">:</span> <span class="dl">"</span><span class="s2">1733390650379</span><span class="dl">"</span> <span class="c1">// 更新时间</span>
   <span class="p">}</span>
 <span class="p">}</span>
 </code></pre></div><h1 id='errors'>Errors</h1><h2 id='e08c1d4f9a'>错误码</h2>
