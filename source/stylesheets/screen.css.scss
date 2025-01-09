@@ -69,8 +69,8 @@ header{
   }
   // This is the logo at the top of the ToC
   .logo {
-    height: 32px;
-    width: 104px;
+    height: 26px;
+    width: 80px;
     margin-right: 44px;
   }
   .nav_box{
@@ -236,14 +236,17 @@ header{
     height: 26px;
     line-height: 26px;
     text-align: center;
-    border: 1px solid #383F66;
-    color: #ADC1D5;
+    border: 1px solid #F0B90B;
+    background-color: #F0B90B;
+    color: #414655;
     text-decoration: none;
-    border-radius: 3px;
+    border-radius: 4px;
+    font-weight:500;
     transition: all 300ms;
     &:hover{
-      color: #F0B90B;
+      color: #414655;
       border-color: #F0B90B;
+      background-color: #F0B90B;
     }
   }
 
@@ -483,7 +486,7 @@ header{
   .lang-selector {
     position: fixed;
     z-index: 50;
-    border-bottom: 5px solid $lang-select-active-bg;
+    border-bottom: 1px solid #1D2123;
   }
 }
 
@@ -497,7 +500,7 @@ header{
     color: $lang-select-text;
     text-decoration: none;
     padding: 0 10px;
-    line-height: 30px;
+    line-height: 38px;
     outline: 0;
 
     &:active, &:focus {
@@ -506,8 +509,8 @@ header{
     }
 
     &.active {
-      background-color: $lang-select-active-bg;
-      color: $lang-select-active-text;
+      background-color: #1D2123;
+      color: #F0B90B;
     }
   }
 
